@@ -51,7 +51,7 @@ def _out(conv: SgConversation) -> ConversationOut:
     return ConversationOut(
         **_summary(conv).model_dump(),
         messages=[MessageOut.model_validate(m) for m in conv.messages],
-        explored=public_state(conv.state),
+        explored=public_state(conv.state, conv.stage),
         clarity=conv.clarity,
         risk_level=conv.risk_level,
         helplines=HELPLINES,
@@ -177,7 +177,7 @@ async def send_message(conv_id: str, body: MessageIn, db: DB, user: CurrentUser)
                 if state_usage:
                     await quota.record(s, u, "bg_sg_state", state_usage)
                 await s.commit()
-                yield sse("state", {"title": c.title, "explored": public_state(c.state)})
+                yield sse("state", {"title": c.title, "explored": public_state(c.state, c.stage)})
         except LLMError as exc:
             log.warning("StudentGPT reply failed: %s", exc)
             async with db_session.SessionLocal() as s:

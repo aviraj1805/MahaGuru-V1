@@ -82,11 +82,11 @@ class ClarityCard(BaseModel):
         return _cap(v, 5)
 
 
-def public_state(state: dict) -> dict:
+def public_state(state: dict, stage: str | None = None) -> dict:
     """The part of the record the student can see in the 'what we've explored' panel."""
     s = ConversationState.model_validate(state or {})
     return {
-        "stage": s.stage,
+        "stage": stage or s.stage,
         "presenting_concern": s.presenting_concern,
         "insights": s.insights,
         "open_threads": s.open_threads,
