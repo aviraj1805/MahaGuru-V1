@@ -2,7 +2,7 @@ import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from sqlalchemy import text
@@ -18,6 +18,46 @@ log = logging.getLogger("mahaguru")
 
 UNSAFE_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
 CSRF_HEADER = "x-requested-with"
+
+
+class SecurityMiddleware:
+    """Pure ASGI (streaming-safe) middleware: CSRF header check + security headers.
+
+    The API authenticates with a cookie, so state-changing requests must carry a custom header.
+    Browsers cannot add it cross-site without a CORS preflight, which only our origins pass.
+    """
+
+    HEADERS = [
+        (b"x-content-type-options", b"nosniff"),
+        (b"referrer-policy", b"strict-origin-when-cross-origin"),
+        (b"x-frame-options", b"DENY"),
+    ]
+
+    def __init__(self, app):
+        self.app = app
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http":
+            return await self.app(scope, receive, send)
+        headers = dict(scope.get("headers") or [])
+        if (
+            scope["method"] in UNSAFE_METHODS
+            and scope["path"].startswith("/api/")
+            and headers.get(CSRF_HEADER.encode()) != b"mahaguru"
+        ):
+            response = JSONResponse(
+                error_body("csrf", "Missing request header. Please reload the page."),
+                status_code=403,
+            )
+            return await response(scope, receive, send)
+
+        async def send_with_headers(message):
+            if message["type"] == "http.response.start":
+                message.setdefault("headers", [])
+                message["headers"] = list(message["headers"]) + self.HEADERS
+            await send(message)
+
+        await self.app(scope, receive, send_with_headers)
 
 
 @asynccontextmanager
@@ -54,24 +94,7 @@ def create_app() -> FastAPI:
         allow_headers=["content-type", CSRF_HEADER],
     )
 
-    @app.middleware("http")
-    async def csrf_guard(request: Request, call_next):
-        # Cookie-authenticated API: require a custom header on state-changing requests. Browsers
-        # cannot send it cross-site without a CORS preflight, which only our origins pass.
-        if (
-            request.method in UNSAFE_METHODS
-            and request.url.path.startswith("/api/")
-            and request.headers.get(CSRF_HEADER) != "mahaguru"
-        ):
-            return JSONResponse(
-                error_body("csrf", "Missing request header. Please reload the page."),
-                status_code=403,
-            )
-        response = await call_next(request)
-        response.headers.setdefault("X-Content-Type-Options", "nosniff")
-        response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
-        response.headers.setdefault("X-Frame-Options", "DENY")
-        return response
+    app.add_middleware(SecurityMiddleware)
 
     for router in (auth.router, studentgpt.router, classroom.router, dashboard.router):
         app.include_router(router, prefix="/api")

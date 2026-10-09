@@ -5,7 +5,7 @@ from fastapi import APIRouter, Response
 from sqlalchemy import select
 
 from app.api.deps import DB, CurrentUser, owned
-from app.api.sse import sse, sse_response
+from app.api.sse import detached, sse, sse_response
 from app.core.errors import AppError
 from app.db import session as db_session
 from app.models import (
@@ -422,13 +422,13 @@ async def teacher_chat(cid: str, body: TeacherMessageIn, db: DB, user: CurrentUs
     question_id, lesson_id, user_id = question.id, (lesson.id if lesson else None), user.id
     _teacher_busy.add(cid)
 
-    async def events():
+    async def produce(emit):
         usage = Usage()
         parts: list[str] = []
         try:
             async for chunk in engine.stream_teacher(system, messages, usage):
                 parts.append(chunk)
-                yield sse("token", {"t": chunk})
+                emit(sse("token", {"t": chunk}))
             async with db_session.SessionLocal() as s:
                 answer = TeacherMessage(
                     classroom_id=cid, lesson_id=lesson_id, role="assistant", content="".join(parts)
@@ -436,7 +436,7 @@ async def teacher_chat(cid: str, body: TeacherMessageIn, db: DB, user: CurrentUs
                 s.add(answer)
                 await quota.record(s, await s.get(User, user_id), "cr_teacher", usage)
                 await s.commit()
-                yield sse("done", {"message_id": answer.id})
+                emit(sse("done", {"message_id": answer.id}))
         except LLMError as exc:
             log.warning("Teacher reply failed: %s", exc)
             async with db_session.SessionLocal() as s:
@@ -444,11 +444,11 @@ async def teacher_chat(cid: str, body: TeacherMessageIn, db: DB, user: CurrentUs
                 if q:
                     await s.delete(q)
                     await s.commit()
-            yield sse("error", {"code": "ai_error", "message": exc.user_message})
+            emit(sse("error", {"code": "ai_error", "message": exc.user_message}))
         finally:
             _teacher_busy.discard(cid)
 
-    return sse_response(events())
+    return sse_response(detached(produce))
 
 
 # ---------------------------------------------------------------- assignments

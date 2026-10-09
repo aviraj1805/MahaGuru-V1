@@ -39,6 +39,9 @@ def _make_engine(url: str) -> AsyncEngine:
         def _fk_on(dbapi_conn, _):  # pragma: no cover - trivial
             cur = dbapi_conn.cursor()
             cur.execute("PRAGMA foreign_keys=ON")
+            # Let readers and a writer coexist (streaming replies write in the background).
+            cur.execute("PRAGMA journal_mode=WAL")
+            cur.execute("PRAGMA busy_timeout=5000")
             cur.close()
 
     return engine

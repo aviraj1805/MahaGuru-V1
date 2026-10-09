@@ -355,6 +355,7 @@ function ConversationView({ id, pending }: { id: string; pending?: string }) {
                 loading={clarity.isPending}
                 disabled={userTurns < 3 || busy}
                 title={userTurns < 3 ? 'Available after a few messages' : 'Summarise what you discovered'}
+                aria-label="Wrap up"
               >
                 <Wand2 className="h-4 w-4 text-reflect" />
                 <span className="hidden sm:inline">Wrap up</span>

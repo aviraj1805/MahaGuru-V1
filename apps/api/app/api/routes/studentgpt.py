@@ -5,7 +5,7 @@ from fastapi import APIRouter, Response
 from sqlalchemy import delete, select
 
 from app.api.deps import DB, CurrentUser, owned
-from app.api.sse import sse, sse_response
+from app.api.sse import detached, sse, sse_response
 from app.core.errors import AppError
 from app.db import session as db_session
 from app.models import SafetyEvent, SgConversation, SgMessage, User
@@ -137,23 +137,23 @@ async def send_message(conv_id: str, body: MessageIn, db: DB, user: CurrentUser)
     user_msg_id, user_id = user_msg.id, user.id
     _in_flight.add(conv_id)
 
-    async def events():
+    async def produce(emit):
         usage = Usage()
         reply_parts: list[str] = []
         try:
             if turn.risk_level != "none":
-                yield sse("safety", {"level": turn.risk_level, "helplines": HELPLINES})
+                emit(sse("safety", {"level": turn.risk_level, "helplines": HELPLINES}))
             try:
                 async for chunk in engine.stream_reply(turn, usage):
                     reply_parts.append(chunk)
-                    yield sse("token", {"t": chunk})
+                    emit(sse("token", {"t": chunk}))
             except LLMError as exc:
                 if turn.risk_level != "crisis" or reply_parts:
                     raise
                 # Never leave a student in crisis without a response.
                 log.error("Crisis reply failed, using fallback: %s", exc)
                 reply_parts = [CRISIS_FALLBACK_REPLY]
-                yield sse("token", {"t": CRISIS_FALLBACK_REPLY})
+                emit(sse("token", {"t": CRISIS_FALLBACK_REPLY}))
 
             reply = "".join(reply_parts).strip()
             async with db_session.SessionLocal() as s:
@@ -169,7 +169,7 @@ async def send_message(conv_id: str, body: MessageIn, db: DB, user: CurrentUser)
                 await quota.record(s, u, "sg_message", usage)
                 c.updated_at = datetime.now(UTC)
                 await s.commit()
-                yield sse("done", {"message_id": assistant.id, "title": c.title})
+                emit(sse("done", {"message_id": assistant.id, "title": c.title}))
 
                 # Update the understanding record before releasing the conversation.
                 await s.refresh(c)
@@ -177,20 +177,20 @@ async def send_message(conv_id: str, body: MessageIn, db: DB, user: CurrentUser)
                 if state_usage:
                     await quota.record(s, u, "bg_sg_state", state_usage)
                 await s.commit()
-                yield sse("state", {"title": c.title, "explored": public_state(c.state, c.stage)})
+                emit(sse("state", {"title": c.title, "explored": public_state(c.state, c.stage)}))
         except LLMError as exc:
             log.warning("StudentGPT reply failed: %s", exc)
             async with db_session.SessionLocal() as s:
                 await s.execute(delete(SgMessage).where(SgMessage.id == user_msg_id))
                 await s.commit()
-            yield sse("error", {"code": "ai_error", "message": exc.user_message})
+            emit(sse("error", {"code": "ai_error", "message": exc.user_message}))
         except Exception:  # pragma: no cover - unexpected
             log.exception("StudentGPT stream crashed")
-            yield sse("error", {"code": "internal_error", "message": "Something went wrong."})
+            emit(sse("error", {"code": "internal_error", "message": "Something went wrong."}))
         finally:
             _in_flight.discard(conv_id)
 
-    return sse_response(events())
+    return sse_response(detached(produce))
 
 
 @router.post("/conversations/{conv_id}/clarity", response_model=ConversationOut)

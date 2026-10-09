@@ -214,3 +214,23 @@ async def test_migrations_match_models(tmp_path: Path):
         tables = await conn.run_sync(lambda c: set(inspect(c).get_table_names()))
     await engine.dispose()
     assert set(Base.metadata.tables) <= tables
+
+
+async def test_detached_stream_survives_client_disconnect():
+    """A reply keeps generating (and would be saved) after the browser goes away."""
+    import asyncio
+
+    from app.api.sse import detached
+
+    finished = asyncio.Event()
+
+    async def producer(emit):
+        for i in range(3):
+            emit(f"chunk{i}")
+            await asyncio.sleep(0.01)
+        finished.set()
+
+    stream = detached(producer)
+    assert await stream.__anext__() == "chunk0"
+    await stream.aclose()  # client disconnects
+    await asyncio.wait_for(finished.wait(), timeout=1)
