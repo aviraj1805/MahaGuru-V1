@@ -18,7 +18,7 @@ jobs:
         image: postgres:16-alpine
         env: { POSTGRES_USER: mg, POSTGRES_PASSWORD: mg, POSTGRES_DB: mahaguru_test }
         ports: ["5432:5432"]
-        options: --health-cmd "pg_isready -U mg" --health-interval 5s --health-retries 10
+        options: --health-cmd "pg_isready -U mg -d mahaguru_test" --health-interval 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -30,12 +30,12 @@ jobs:
         run: git diff --exit-code app/services/studentgpt/data/exemplars.jsonl
       - name: Tests (SQLite)
         run: uv run pytest -q
+      - name: Migrations apply cleanly on a fresh PostgreSQL database
+        run: uv run alembic upgrade head
+        env: { ENV: test, LLM_PROVIDER: fake, DATABASE_URL: "postgresql://mg:mg@localhost:5432/mahaguru_test" }
       - name: Tests (PostgreSQL)
         run: uv run pytest -q
         env: { TEST_DATABASE_URL: "postgresql+asyncpg://mg:mg@localhost:5432/mahaguru_test" }
-      - name: Migrations apply cleanly on PostgreSQL
-        run: uv run alembic upgrade head
-        env: { ENV: test, LLM_PROVIDER: fake, DATABASE_URL: "postgresql://mg:mg@localhost:5432/mahaguru_test" }
 
   web:
     runs-on: ubuntu-latest
