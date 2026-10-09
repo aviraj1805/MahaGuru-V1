@@ -312,4 +312,4 @@ Contributions are welcome. Please open an issue to discuss a substantial change 
 
 ## License
 
-Released under the [MIT License](LICENSE).
+Released under the [MIT License](LICENSE)..
