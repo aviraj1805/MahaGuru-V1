@@ -26,6 +26,9 @@ export default defineConfig({
     command: `bash -c "rm -f /tmp/mahaguru-e2e.db && cd ../api && uv run alembic upgrade head && uv run uvicorn app.main:app --port ${PORT}"`,
     url: `http://localhost:${PORT}/api/health`,
     reuseExistingServer: false,
+    // Show the API's request log in CI output; it is the first place to look when a journey fails.
+    stdout: 'pipe',
+    stderr: 'pipe',
     timeout: 120_000,
     env: {
       ENV: 'test',
