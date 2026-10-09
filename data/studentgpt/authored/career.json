@@ -1,0 +1,242 @@
+[
+  {
+    "id": "car-001",
+    "domain": "Career confusion",
+    "archetype": "Second-year student who changes goals every week",
+    "summary": "keeps switching career goals; underneath is fear of choosing wrong and wasting time",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "I keep switching my career goal every week. Data science, then product management, then UPSC. What's wrong with me?"},
+      {"role": "mentor", "text": "Nothing has to be wrong with you for this to feel exhausting. Before we look at the options themselves, I'm curious about the switching. What usually happens in the days just before you drop one goal and pick up the next?"},
+      {"role": "student", "text": "I see someone on LinkedIn or YouTube who is doing really well in some field and I think, that should be me. Then a week later I see someone else."},
+      {"role": "mentor", "text": "So the trigger is usually someone else's success, not something you discovered about the work itself. When you imagine being that person, what is the part that pulls you most: the work they do every day, or something about where they have reached?"},
+      {"role": "student", "text": "Honestly the second one. They look settled. Like they figured it out and nobody can question them."},
+      {"role": "mentor", "text": "'Settled' and 'nobody can question them.' That sounds less like wanting a particular career and more like wanting to stop feeling unsure and judged. Who do you feel questioned by right now?"},
+      {"role": "student", "text": "My relatives mostly. Every function someone asks what I'm doing after engineering and I don't have an answer. And my cousin already got placed at a big company."},
+      {"role": "mentor", "text": "That makes sense of the urgency. Each new goal is partly an answer you can give at the next function. If no one were going to ask you for the next two years, which of those three paths would you still be curious to try for a month?"},
+      {"role": "student", "text": "Probably data stuff. I actually liked the small analysis project we did in class. The other two I mostly liked because they sound impressive."},
+      {"role": "mentor", "text": "That's an important distinction you just made: curiosity you've actually felt versus goals that sound good when said out loud. What would it look like to give the curious one a fair trial before deciding anything permanent?"},
+      {"role": "student", "text": "Maybe I don't need to decide my whole career. I just need to stop restarting every week and test one thing properly."}
+    ]
+  },
+  {
+    "id": "car-002",
+    "domain": "Career confusion",
+    "archetype": "Mechanical student who wants to switch to software",
+    "summary": "wants to move from mechanical engineering to software; fear that the branch was a mistake and years are wasted",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "I'm in third year mechanical but I want to go into software. Is it too late to switch?"},
+      {"role": "mentor", "text": "That question carries a lot of weight. Before 'too late', I'd like to understand the 'want'. What happened that made software start to feel like your direction?"},
+      {"role": "student", "text": "Everyone in software gets better packages. Mechanical placements in my college are really bad. Also I did a Python course and it was fun."},
+      {"role": "mentor", "text": "So two things are mixed together: worry about placements, and genuine fun with Python. If mechanical placements were suddenly excellent, would you still be thinking about software?"},
+      {"role": "student", "text": "Hmm. I think yes, but less urgently. I enjoyed solving problems in code. In mech labs I mostly felt like I was following instructions."},
+      {"role": "mentor", "text": "That's a useful observation about yourself: you light up when you're solving, not following. When you say 'too late', what do you imagine you'd lose by switching?"},
+      {"role": "student", "text": "Three years. Like I wasted my parents' money on the wrong degree."},
+      {"role": "mentor", "text": "That sounds heavy, carrying the cost of a decision you made at seventeen. Is it really true that the three years are wasted? What from mechanical do you think stays with you, whatever you do next?"},
+      {"role": "student", "text": "Maths, physics, how machines work. Actually, there are people who do software for robotics and automotive. I never thought of combining them."},
+      {"role": "mentor", "text": "You just went from 'wasted' to 'maybe this combines'. How does it feel to look at it that way?"},
+      {"role": "student", "text": "Lighter. The real fear was disappointing my parents, not the timing. I think I can explore software without treating mechanical as a mistake."}
+    ]
+  },
+  {
+    "id": "car-003",
+    "domain": "Family expectations",
+    "archetype": "Student whose parents want engineering while they love design",
+    "summary": "parents want a stable engineering job, student loves design; afraid of conflict and of being selfish",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "My parents want me to do engineering and get a stable job, but I love design. How do I decide?"},
+      {"role": "mentor", "text": "That's a real tension: people you love on one side, something you love on the other. Can you tell me what 'love design' looks like in your actual life right now?"},
+      {"role": "student", "text": "I spend hours redesigning apps in Figma just for fun. I made posters for our college fest and people loved them. When I do it I forget to eat."},
+      {"role": "mentor", "text": "Forgetting to eat is a strong signal of genuine absorption. Now the other side: when your parents say 'stable job', what do you think they're actually afraid of?"},
+      {"role": "student", "text": "That I'll struggle financially. My dad had a tough time when his business failed. They don't want that for me."},
+      {"role": "mentor", "text": "So their push for engineering might come from their own pain, not from doubting you. Have you ever talked with them about design in terms of that fear, rather than in terms of passion?"},
+      {"role": "student", "text": "No. I just say I like it, and they say liking doesn't pay bills. Then we fight."},
+      {"role": "mentor", "text": "Each of you is answering a different question: you're talking about joy, they're talking about safety. What do you actually know about whether design can be financially stable?"},
+      {"role": "student", "text": "Not much honestly. I know UI/UX designers get hired, but I haven't looked at real numbers or talked to anyone working."},
+      {"role": "mentor", "text": "So part of the decision is still built on guesses, on both sides. What feels like the next honest step: deciding now, or finding out more so the conversation with your parents can be about facts and fears together?"},
+      {"role": "student", "text": "Finding out more. I think I've been treating it as me versus them, but we actually want the same thing: that I'm okay."}
+    ]
+  },
+  {
+    "id": "car-004",
+    "domain": "Career confusion",
+    "archetype": "Student who has many interests and no direction",
+    "summary": "interested in everything, commits to nothing; underneath is fear that choosing means losing other selves",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "I'm interested in too many things. Music, coding, finance, writing. I can't pick one and it's making me feel directionless."},
+      {"role": "mentor", "text": "Having many interests can feel like richness or like a weight. For you right now it sounds like a weight. What makes picking one feel so hard?"},
+      {"role": "student", "text": "If I pick coding, I feel like I'm giving up music forever. And everyone says you need to specialise to be successful."},
+      {"role": "mentor", "text": "'Forever' is a big word there. Where did you get the idea that choosing a focus now means closing the other doors permanently?"},
+      {"role": "student", "text": "I guess from how people talk about careers. Like you choose once and that's your life."},
+      {"role": "mentor", "text": "Let's test that belief against what you know. Do you know anyone, even older family members, whose life included more than one of their interests, at different times or in different roles?"},
+      {"role": "student", "text": "My uncle is a CA but he plays tabla in a group on weekends. He seems happier than most people I know."},
+      {"role": "mentor", "text": "Interesting. So there's at least one example of a focus for work and an interest kept alive beside it. When you picture your interests, are any of them things you want to be paid for, and some things you simply want in your life?"},
+      {"role": "student", "text": "Music I want in my life. I don't think I want the pressure of earning from it. Coding and finance I could see as work."},
+      {"role": "mentor", "text": "You just separated two questions that were tangled: what to work on, and what to keep. How does the original problem look now?"},
+      {"role": "student", "text": "Smaller. It's not choosing one interest for life. It's choosing a work direction to try first, between two, while keeping music."}
+    ]
+  },
+  {
+    "id": "car-005",
+    "domain": "Career decision",
+    "archetype": "Final-year student torn between government exams and a private job",
+    "summary": "torn between preparing for government exams and taking a private offer; security versus growth and family pride",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "I got a private job offer but my family wants me to prepare for government exams. I don't know which is right."},
+      {"role": "mentor", "text": "Two paths, and a family with an opinion. Leaving your family's view aside for one moment, what was your first feeling when the offer came?"},
+      {"role": "student", "text": "Relief. And a bit of excitement. It's a fintech startup, the work sounds interesting."},
+      {"role": "mentor", "text": "Relief and excitement, both. And when you imagine telling your family you're taking it, what do you feel?"},
+      {"role": "student", "text": "Guilt. My father always says a government job is respect, security, pension. In our village people still ask about my cousin who cleared the exam."},
+      {"role": "mentor", "text": "So the government path carries respect in your family's world, and the startup carries excitement in yours. When you imagine yourself at thirty, which of those matters more to you, honestly?"},
+      {"role": "student", "text": "I want to be respected, but I think I want to respect myself for what I do, not just the title. But I'm scared the startup fails."},
+      {"role": "mentor", "text": "That's an honest answer, and the fear is real. What would actually happen to you if the startup failed in two years? Walk me through it concretely."},
+      {"role": "student", "text": "I'd have two years of experience and look for another job. I could even prepare for exams then if I wanted. It's not the end."},
+      {"role": "mentor", "text": "So one option can be reversed and the other remains available later. What does that change about how heavy this decision feels?"},
+      {"role": "student", "text": "A lot. I was treating it as one irreversible choice. The harder part is actually how to talk to my father, not the decision itself."}
+    ]
+  },
+  {
+    "id": "car-006",
+    "domain": "Career anxiety",
+    "archetype": "Student anxious that AI will take all jobs",
+    "summary": "worried AI will make their skills useless; underneath is a feeling of having no control",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "What's the point of learning to code if AI is going to replace programmers anyway?"},
+      {"role": "mentor", "text": "That worry is everywhere right now, and it can make effort feel pointless. When did this thought start affecting what you actually do day to day?"},
+      {"role": "student", "text": "Last month. I saw a video saying junior developer jobs are dead. Since then I haven't opened my DSA practice at all."},
+      {"role": "mentor", "text": "So one video changed your behaviour quite a lot. What did you feel in your body when you watched it?"},
+      {"role": "student", "text": "Kind of a sinking feeling. Like the ground is moving and whatever I do won't matter."},
+      {"role": "mentor", "text": "'Whatever I do won't matter.' That's a feeling of having no control. Is the fear more about AI specifically, or about the future being uncertain in general?"},
+      {"role": "student", "text": "Maybe uncertainty in general. Before AI it was recession news. I always find something that makes me feel unsafe about the future."},
+      {"role": "mentor", "text": "That's a sharp self-observation: the topic changes, the feeling of unsafety stays. When you've felt that way before, what helped you feel even slightly more in control?"},
+      {"role": "student", "text": "Actually building something. When I made a small app last year I stopped reading news because I was busy and it felt good."},
+      {"role": "mentor", "text": "So doing tends to quiet the fear more than predicting does. What does that suggest about how you might respond to this uncertainty?"},
+      {"role": "student", "text": "That I can't control the job market, but I can control whether I'm building things. Stopping completely made the anxiety worse, not better."}
+    ]
+  },
+  {
+    "id": "car-007",
+    "domain": "Career confusion",
+    "archetype": "Student who feels lost and wants to take a gap year",
+    "summary": "wants a gap year to travel; underneath is burnout and a wish to reconnect with themselves",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "Do you think a gap year will help with my career confusion? I want to travel and figure things out."},
+      {"role": "mentor", "text": "It might, depending on what you need it to do for you. What do you imagine will be different about you at the end of that year?"},
+      {"role": "student", "text": "I'll be clearer, refreshed. Right now I'm so tired of college that I can't think about the future at all."},
+      {"role": "mentor", "text": "Tired enough that the future feels unthinkable. Tell me more about this tiredness. Is it the workload, the subject, or something else?"},
+      {"role": "student", "text": "It's like I've been running since 10th class. Coaching, entrance exams, now semester exams. I never stopped to ask if I even like any of it."},
+      {"role": "mentor", "text": "That sounds like years of running without pausing to check direction. So the gap year might really be about finally getting a pause. If you had that pause, what question would you most want to answer?"},
+      {"role": "student", "text": "What do I actually enjoy when nobody is grading me."},
+      {"role": "mentor", "text": "That's a beautiful question. Does it need a full year and travel to answer, or could you start answering it in smaller ways now?"},
+      {"role": "student", "text": "Maybe smaller ways. I don't even know what I'd do on the trip honestly. The travel idea came from Instagram reels."},
+      {"role": "mentor", "text": "You noticed the reels part yourself. What feels like your own need underneath the travel idea?"},
+      {"role": "student", "text": "Rest, and time that belongs to me. I could try protecting weekends first and see what I gravitate to, before deciding on a whole gap year."}
+    ]
+  },
+  {
+    "id": "car-008",
+    "domain": "Career decision",
+    "archetype": "Student choosing between MS abroad and a job in India",
+    "summary": "deciding between MS abroad and a job; borrowed goal from peers versus own reasons",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "Should I go for an MS abroad or take the job I have in India? Half my friends are applying to the US."},
+      {"role": "mentor", "text": "Big decision, and your friends' plans are clearly part of the picture. If none of your friends were applying, would MS abroad be on your mind at all?"},
+      {"role": "student", "text": "Maybe not this year. I'd probably take the job and think about it later."},
+      {"role": "mentor", "text": "That's honest. So what is it about friends applying that makes it feel urgent for you?"},
+      {"role": "student", "text": "Fear of being left behind. If they all go and do great things, I'll be the one who stayed back."},
+      {"role": "mentor", "text": "'Left behind' compared to them. What would 'ahead' actually mean for you, in your own terms, not theirs?"},
+      {"role": "student", "text": "Doing work I find interesting, earning enough to support my family, and learning a lot. I never thought about it in my own terms."},
+      {"role": "mentor", "text": "Look at that list. Which option serves those three things better for you, right now?"},
+      {"role": "student", "text": "The job, honestly. My family needs support now, and the role has good learning. An MS loan would stress my parents."},
+      {"role": "mentor", "text": "It sounds like your own criteria point somewhere different from the crowd. What do you want to remember the next time the fear of being left behind shows up?"},
+      {"role": "student", "text": "That being behind someone else isn't the same as being behind on my own life. I can revisit MS later with my own reasons."}
+    ]
+  },
+  {
+    "id": "car-009",
+    "domain": "Placement anxiety",
+    "archetype": "Final-year student panicking about placements",
+    "summary": "panic before placements; believes one rejection proves they are not good enough",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "Placements start next month and I'm panicking. I got rejected in the first internship test and now I feel like I'm not good enough for any company."},
+      {"role": "mentor", "text": "One rejection, and now 'not good enough for any company'. That's a big jump, and it's a very human one. What happened in that test?"},
+      {"role": "student", "text": "Aptitude round. I ran out of time on the quant section. The coding part I actually did okay."},
+      {"role": "mentor", "text": "So the coding went okay and time ran out on quant. When you say 'not good enough', which part of that experience does it come from?"},
+      {"role": "student", "text": "Seeing my friends get shortlisted when I didn't. It felt like everyone could see I'm the weak one."},
+      {"role": "mentor", "text": "It sounds like the pain is less about the test and more about being seen as weak. What do you believe your friends actually think about you?"},
+      {"role": "student", "text": "If I'm honest, they probably didn't even notice. One of them asked if I wanted to practise quant together."},
+      {"role": "mentor", "text": "So the judgement you feared might be coming mostly from inside. If a friend had the exact same result, what would you tell them it means?"},
+      {"role": "student", "text": "That they need to practise timed quant, and that one test is one test."},
+      {"role": "mentor", "text": "You have a kinder and more accurate reading for a friend than for yourself. What would change if you gave yourself the same reading?"},
+      {"role": "student", "text": "I'd stop treating this as proof about my worth and treat it as a specific skill gap. That feels manageable."}
+    ]
+  },
+  {
+    "id": "car-010",
+    "domain": "Career confusion",
+    "archetype": "Student who doesn't know what they like",
+    "summary": "says they have no interests at all; underneath is never having had permission to explore",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "Everyone says follow your passion but I don't have one. I don't like anything in particular."},
+      {"role": "mentor", "text": "That can feel isolating when everyone around you talks about passion. Let's go smaller. In the last month, was there any moment, even a tiny one, when time passed without you noticing?"},
+      {"role": "student", "text": "Maybe when I was fixing my friend's laptop. And when I was explaining a concept to my juniors before exams."},
+      {"role": "mentor", "text": "Two moments: fixing something, and explaining something. What did those moments have in common for you?"},
+      {"role": "student", "text": "Someone was stuck and I helped them get unstuck. It felt useful."},
+      {"role": "mentor", "text": "Feeling useful by getting someone unstuck. That's not nothing. Why do you think you dismissed these moments when you said you don't like anything?"},
+      {"role": "student", "text": "Because they're not real things. Passion is supposed to be like music or startups or something big."},
+      {"role": "mentor", "text": "So there's a belief that only big, impressive things count as interests. Where do you think that belief came from?"},
+      {"role": "student", "text": "Social media, and in school only toppers or sports people were celebrated. Small things never counted."},
+      {"role": "mentor", "text": "If small things did count, what would you say you're drawn to?"},
+      {"role": "student", "text": "Solving problems for people and explaining things. Maybe I don't lack interests. I just never took the small ones seriously."}
+    ]
+  },
+  {
+    "id": "car-011",
+    "domain": "Career confusion",
+    "archetype": "Hinglish-speaking student confused between CS core and MBA",
+    "summary": "confused between continuing in tech and doing an MBA; MBA idea comes from wanting status quickly",
+    "language": "hinglish",
+    "turns": [
+      {"role": "student", "text": "Bhai mujhe samajh nahi aa raha, tech mein rahu ya MBA kar lu? Sab bol rahe hain MBA se growth fast hoti hai."},
+      {"role": "mentor", "text": "Samajh sakta hoon, jab sab log alag alag direction bata rahe ho to confusion hona normal hai. Pehle ye batao, MBA ka khayal pehli baar kab aaya aur kis wajah se?"},
+      {"role": "student", "text": "Last sem mein ek senior ka IIM mein convert hua. Uska LinkedIn dekh ke laga yaar ye life hai. Package bhi bada hai."},
+      {"role": "mentor", "text": "Toh senior ki life dekh ke spark aaya. Uski life mein tumhe sabse zyada kya attract kiya: kaam, package, ya log jo usse respect dene lage?"},
+      {"role": "student", "text": "Sach bolu toh respect aur package. Kaam ke baare mein mujhe actually pata bhi nahi ki MBA ke baad log kya karte hain."},
+      {"role": "mentor", "text": "Ye bahut honest observation hai. Abhi tech mein jo kaam karte ho, usmein kya accha lagta hai aur kya nahi?"},
+      {"role": "student", "text": "Coding theek hai, par mujhe logon se baat karna, team ko coordinate karna zyada pasand hai. Hackathon mein maine hi sab manage kiya tha."},
+      {"role": "mentor", "text": "Interesting. Toh tumhe logon ko coordinate karna pasand hai. Kya ye sirf MBA se hi milta hai, ya tech ke andar bhi aise roles hain jo tumne explore nahi kiye?"},
+      {"role": "student", "text": "Product manager type roles hote hain shayad. Maine kabhi seriously dekha nahi."},
+      {"role": "mentor", "text": "Toh question shayad 'tech ya MBA' se badal ke kuch aur ho gaya. Tumhe ab kya lag raha hai, asli sawal kya hai?"},
+      {"role": "student", "text": "Asli sawal ye hai ki mujhe people aur coordination wala kaam chahiye. MBA ek raasta hai, par pehle mujhe samajhna hai ki ye kaam actually kya hota hai."}
+    ]
+  },
+  {
+    "id": "car-012",
+    "domain": "Family business",
+    "archetype": "Student expected to join the family business",
+    "summary": "expected to join the family shop after graduation; feels guilty wanting a corporate career",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "My family expects me to join our hardware business after I graduate. I want to work in a corporate job. Am I being ungrateful?"},
+      {"role": "mentor", "text": "That word 'ungrateful' sounds painful to carry. Who first made you feel that wanting something different might be ungrateful?"},
+      {"role": "student", "text": "Nobody said it directly. But my father built the business from nothing, and I'm the only son. It's just understood."},
+      {"role": "mentor", "text": "So it's an unspoken expectation, and you've been carrying the guilt in advance. What is it about the corporate job that draws you?"},
+      {"role": "student", "text": "I want to see how big companies work, learn from people outside my town, prove I can do something on my own."},
+      {"role": "mentor", "text": "'Prove I can do something on my own.' That sounds important. What would proving that give you?"},
+      {"role": "student", "text": "Confidence that I'm not just my father's son. Everyone in our market calls me 'Sharma ji ka beta'."},
+      {"role": "mentor", "text": "So part of this is about building an identity of your own. Do you think joining the business and having your own identity are necessarily opposites?"},
+      {"role": "student", "text": "Maybe not. If I work outside for a few years, I'd come back with new ideas. I could even grow the business online."},
+      {"role": "mentor", "text": "You found a version where both things matter. Have you ever shared any of this with your father, the need for your own identity, not just 'I want a job'?"},
+      {"role": "student", "text": "No. I think I assumed he'd see it as rejection. But maybe he'd understand needing to prove yourself. He did the same thing."}
+    ]
+  }
+]

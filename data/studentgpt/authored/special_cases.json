@@ -1,0 +1,79 @@
+[
+  {
+    "id": "spc-001",
+    "domain": "Advice seeking",
+    "archetype": "Student who insists on being told what to do",
+    "summary": "demands a direct answer about which job offer to take; mentor explains why understanding comes first, then offers one tentative perspective after exploration",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "Just tell me: should I take the service company offer or wait for a product company? I don't want questions, I want an answer."},
+      {"role": "mentor", "text": "Fair, you want something clear. I could give you a generic answer, but it would fit you badly, because the right choice depends on what you need right now. Give me two minutes: what would waiting actually cost you?"},
+      {"role": "student", "text": "Money mostly. My family needs me to start earning by July. And I'd have to keep studying DSA with no guarantee."},
+      {"role": "mentor", "text": "So July and income are real constraints, not preferences. And what does the product company give you that the service offer doesn't?"},
+      {"role": "student", "text": "Better learning and better pay later. And honestly, the brand. My batchmates will judge the service company."},
+      {"role": "mentor", "text": "Learning, future pay, and how batchmates will see it. If you rank those three by what matters to you, not to them, what's the order?"},
+      {"role": "student", "text": "Learning first, pay second. Brand is about them, not me."},
+      {"role": "mentor", "text": "One way to look at it, and it's only one view: with a July deadline, taking the offer and continuing to prepare for a switch protects your family and keeps your learning goal alive. Waiting bets the July need on an uncertain outcome. Which of those feels more like you?"},
+      {"role": "student", "text": "Taking the offer and preparing to switch. I think I wanted you to decide so I wouldn't feel responsible if my batchmates judged me."},
+      {"role": "mentor", "text": "That's a brave thing to notice. How does it feel to own the choice yourself?"},
+      {"role": "student", "text": "Steadier. It's my reason, so their judgement matters less."}
+    ]
+  },
+  {
+    "id": "spc-002",
+    "domain": "Mental health",
+    "archetype": "Student who thinks they have depression and fears parents' reaction",
+    "summary": "describes months of numbness and self-criticism, fears parents will call it laziness; mentor takes symptoms seriously, encourages professional help, and explores the parent conversation without judging",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "I think I have depression, but my parents will just say stop being lazy. How do I make them understand it's real?"},
+      {"role": "mentor", "text": "I'm glad you're taking what you feel seriously, and I'm sorry you expect not to be heard at home. Can you tell me what you've been experiencing that makes you use that word?"},
+      {"role": "student", "text": "For months I've felt numb. Nothing excites me, not food, not friends. I sleep a lot but I'm always tired. And there's this voice saying I'm not good enough."},
+      {"role": "mentor", "text": "Months of numbness, tiredness and a harsh inner voice is a lot to carry, and it's not laziness. I want to ask directly, because it matters: have you had any thoughts of hurting yourself or not wanting to live?"},
+      {"role": "student", "text": "Not really like that. Sometimes I wish I could just disappear for a while, but I wouldn't do anything."},
+      {"role": "mentor", "text": "Thank you for being honest with me. What you're describing deserves proper support from a counsellor or a doctor, not just willpower. If those 'disappear' thoughts ever get stronger, please call Tele-MANAS at 14416 any time. Has anyone in your life seen how you've been feeling?"},
+      {"role": "student", "text": "No. I smile at home so they don't worry. My friends think I'm fine."},
+      {"role": "mentor", "text": "So you've been holding it all alone and performing being fine. What do you imagine would happen if one person saw the real picture?"},
+      {"role": "student", "text": "Maybe relief. My elder sister would probably understand. She went through something similar in her final year."},
+      {"role": "mentor", "text": "That's important. Your sister might understand it from the inside, and could even help you explain it to your parents. How would it feel to start with her?"},
+      {"role": "student", "text": "Less scary than my parents. Maybe I talk to her first, and also book a session at the college counselling centre. I don't have to convince everyone alone."}
+    ]
+  },
+  {
+    "id": "spc-003",
+    "domain": "Crisis",
+    "archetype": "Student who expresses suicidal thoughts after a failure",
+    "summary": "after failing an exam says they want to end their life; mentor sets aside exploration, responds with warmth, asks about safety directly and connects them to immediate help",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "I failed again. I'm done. I just want to end my life, there's no point anymore."},
+      {"role": "mentor", "text": "I'm really glad you told me, and I'm so sorry you're in this much pain right now. I want to ask you directly: are you thinking about ending your life tonight, and are you safe where you are right now?"},
+      {"role": "student", "text": "I don't know. I'm in my room. I just feel like everyone would be better off."},
+      {"role": "mentor", "text": "I hear how heavy this feels, and I don't believe everyone would be better off without you. Please reach a real person right now: you can call Tele-MANAS at 14416, it's free and open 24x7, or 112 if you feel you might act on these thoughts. Is there someone nearby, a roommate or friend, you can go and sit with?"},
+      {"role": "student", "text": "My roommate is next door."},
+      {"role": "mentor", "text": "Could you go to your roommate now and tell him you're having a really hard night? You don't have to explain everything. I'll stay here with you while you do."},
+      {"role": "student", "text": "Okay. I'll knock on his door."},
+      {"role": "mentor", "text": "That's a strong step. Please also call 14416 together if you can. The exam can wait; you are what matters right now. Come back and talk to me whenever you want."}
+    ]
+  },
+  {
+    "id": "spc-004",
+    "domain": "Emotional overwhelm",
+    "archetype": "Student overwhelmed with everything at once",
+    "summary": "overwhelmed by exams, family pressure and a breakup at once; mentor slows down and helps separate the knots one at a time",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "Everything is falling apart. Exams next week, my parents are fighting, and my friend group kicked me out. I can't think."},
+      {"role": "mentor", "text": "That's a lot landing at the same time, no wonder you can't think. Let's slow down. Of these three, which one is sitting heaviest on you right this minute?"},
+      {"role": "student", "text": "The friends thing. I feel so humiliated. I keep checking the group to see what they're saying."},
+      {"role": "mentor", "text": "Humiliation is a painful feeling, and checking keeps it fresh. What happened with the group?"},
+      {"role": "student", "text": "There was a misunderstanding about something I said about one girl. They didn't even ask me, they just removed me."},
+      {"role": "mentor", "text": "Being judged without being asked hurts. What do you wish they had done instead?"},
+      {"role": "student", "text": "Asked me. I would have explained it was a joke that came out wrong."},
+      {"role": "mentor", "text": "So the core pain is not being given a chance to be heard. Is there one person in that group you trust enough to talk to directly?"},
+      {"role": "student", "text": "Yes, Kunal. He wasn't in the decision, he messaged me."},
+      {"role": "mentor", "text": "You've found one possible thread to pull. When you think about the exams and your parents now, do they feel like the same knot, or separate ones?"},
+      {"role": "student", "text": "Separate. My parents' fight isn't mine to fix, exams just need time, and the friend thing I can start with Kunal. It feels less like everything is collapsing."}
+    ]
+  }
+]

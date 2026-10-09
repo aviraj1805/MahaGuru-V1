@@ -1,0 +1,216 @@
+import json
+from pathlib import Path
+
+import httpx
+import pytest
+from pydantic import BaseModel
+from sqlalchemy import inspect
+from sqlalchemy.ext.asyncio import create_async_engine
+
+from app.core.config import Settings
+from app.db.base import Base
+from app.db.session import normalize_database_url
+from app.services.llm import ChatMessage, LLMError, LLMRateLimited, Usage, generate_structured
+from app.services.llm.base import LLMProvider, LLMResult
+from app.services.llm.gemini import GeminiProvider
+from app.services.llm.openai_compat import OpenAICompatProvider
+from app.services.llm.structured import extract_json
+
+
+class Point(BaseModel):
+    x: int
+    y: int
+
+
+class ScriptedProvider(LLMProvider):
+    def __init__(self, replies):
+        super().__init__()
+        self.replies = list(replies)
+        self.seen: list[list[ChatMessage]] = []
+
+    async def _complete(self, *, system, messages, model, temperature, max_tokens, json_mode, task):
+        self.seen.append(messages)
+        return LLMResult(self.replies.pop(0), Usage(model=model, input_tokens=1, output_tokens=1))
+
+    async def _stream(self, **kwargs):  # pragma: no cover
+        yield ""
+
+
+async def test_structured_output_repairs_once():
+    llm = ScriptedProvider(['{"x": 1}', '```json\n{"x": 1, "y": 2}\n```'])
+    point, usage = await generate_structured(
+        llm, Point, task="t", system="s", prompt="p", model="m"
+    )
+    assert point == Point(x=1, y=2) and usage.input_tokens == 2
+    assert "invalid" in llm.seen[1][-1].content
+
+
+async def test_structured_output_gives_up():
+    llm = ScriptedProvider(["nope", "still nope"])
+    with pytest.raises(LLMError):
+        await generate_structured(llm, Point, task="t", system="s", prompt="p", model="m")
+
+
+def test_extract_json():
+    assert extract_json('Sure! {"a": {"b": 1}} hope it helps') == '{"a": {"b": 1}}'
+
+
+def _gemini(handler) -> GeminiProvider:
+    p = GeminiProvider(api_key="k", base_url="https://gemini.test/v1beta")
+    p._client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+    return p
+
+
+async def test_gemini_request_and_response_mapping():
+    captured = {}
+
+    def handler(request: httpx.Request):
+        captured["url"] = str(request.url)
+        captured["body"] = json.loads(request.content)
+        return httpx.Response(
+            200,
+            json={
+                "candidates": [{"content": {"parts": [{"text": "hello"}]}, "finishReason": "STOP"}],
+                "usageMetadata": {"promptTokenCount": 7, "candidatesTokenCount": 3},
+            },
+        )
+
+    p = _gemini(handler)
+    result = await p.complete(
+        system="sys",
+        messages=[
+            ChatMessage("user", "hi"),
+            ChatMessage("assistant", "yo"),
+            ChatMessage("user", "q"),
+        ],
+        model="gemini-2.5-flash",
+        json_mode=True,
+    )
+    assert result.text == "hello" and result.usage.input_tokens == 7
+    body = captured["body"]
+    assert captured["url"].endswith("/models/gemini-2.5-flash:generateContent")
+    assert [c["role"] for c in body["contents"]] == ["user", "model", "user"]
+    assert body["systemInstruction"]["parts"][0]["text"] == "sys"
+    assert body["generationConfig"]["responseMimeType"] == "application/json"
+    assert body["generationConfig"]["thinkingConfig"] == {"thinkingBudget": 0}
+
+
+async def test_gemini_stream_parses_sse():
+    chunks = [
+        {"candidates": [{"content": {"parts": [{"text": "Hel"}]}}]},
+        {
+            "candidates": [{"content": {"parts": [{"text": "lo"}]}}],
+            "usageMetadata": {"promptTokenCount": 4, "candidatesTokenCount": 2},
+        },
+    ]
+    body = "".join(f"data: {json.dumps(c)}\r\n\r\n" for c in chunks)
+
+    def handler(request):
+        return httpx.Response(200, text=body, headers={"content-type": "text/event-stream"})
+
+    usage = Usage()
+    out = [
+        t
+        async for t in _gemini(handler).stream(
+            system="s", messages=[ChatMessage("user", "x")], model="m", usage=usage
+        )
+    ]
+    assert "".join(out) == "Hello" and usage.output_tokens == 2
+
+
+async def test_rate_limit_maps_to_friendly_error(monkeypatch):
+    monkeypatch.setattr("app.services.llm.http_util.asyncio.sleep", _no_sleep)
+
+    def handler(request):
+        return httpx.Response(429, json={"error": "quota"}, headers={"retry-after": "30"})
+
+    with pytest.raises(LLMRateLimited) as exc:
+        await _gemini(handler).complete(system="s", messages=[ChatMessage("user", "x")], model="m")
+    assert exc.value.retry_after == 30
+
+
+async def test_transient_errors_are_retried(monkeypatch):
+    monkeypatch.setattr("app.services.llm.http_util.asyncio.sleep", _no_sleep)
+    calls = {"n": 0}
+
+    def handler(request):
+        calls["n"] += 1
+        if calls["n"] < 2:
+            return httpx.Response(503, text="busy")
+        return httpx.Response(200, json={"candidates": [{"content": {"parts": [{"text": "ok"}]}}]})
+
+    result = await _gemini(handler).complete(
+        system="s", messages=[ChatMessage("user", "x")], model="m"
+    )
+    assert result.text == "ok" and calls["n"] == 2
+
+
+async def test_openai_compat_mapping():
+    captured = {}
+
+    def handler(request):
+        captured["body"] = json.loads(request.content)
+        captured["auth"] = request.headers.get("authorization")
+        return httpx.Response(
+            200,
+            json={
+                "choices": [{"message": {"content": '{"x":1,"y":2}'}}],
+                "usage": {"prompt_tokens": 5, "completion_tokens": 6},
+            },
+        )
+
+    p = OpenAICompatProvider(base_url="https://llm.test/v1", api_key="secret")
+    p._client = httpx.AsyncClient(
+        transport=httpx.MockTransport(handler), headers={"authorization": "Bearer secret"}
+    )
+    point, usage = await generate_structured(
+        p, Point, task="t", system="s", prompt="p", model="llama"
+    )
+    assert point.y == 2 and usage.output_tokens == 6
+    assert captured["body"]["messages"][0] == {"role": "system", "content": "s"}
+    assert captured["body"]["response_format"] == {"type": "json_object"}
+    assert captured["auth"] == "Bearer secret"
+
+
+async def _no_sleep(_):
+    return None
+
+
+def test_production_settings_are_strict():
+    with pytest.raises(ValueError, match="SECRET_KEY"):
+        Settings(env="production", llm_provider="openai_compat", secret_key="too-short-key")
+    with pytest.raises(ValueError, match="fake"):
+        Settings(env="production", llm_provider="fake", secret_key="x" * 40)
+    with pytest.raises(ValueError, match="GEMINI_API_KEY"):
+        Settings(env="development", llm_provider="gemini", gemini_api_key=None)
+    ok = Settings(env="production", llm_provider="gemini", gemini_api_key="k", secret_key="x" * 40)
+    assert ok.is_production
+
+
+def test_database_url_normalisation():
+    assert normalize_database_url("postgres://u:p@h/db") == "postgresql+asyncpg://u:p@h/db"
+    assert (
+        normalize_database_url("postgresql://u:p@h/db?sslmode=require&channel_binding=require")
+        == "postgresql+asyncpg://u:p@h/db?ssl=require"
+    )
+    assert normalize_database_url("sqlite+aiosqlite:///x.db") == "sqlite+aiosqlite:///x.db"
+
+
+async def test_migrations_match_models(tmp_path: Path):
+    """`alembic upgrade head` must produce exactly the tables the models declare."""
+    from alembic.config import Config
+
+    from alembic import command
+
+    url = f"sqlite+aiosqlite:///{tmp_path}/mig.db"
+    cfg = Config(str(Path(__file__).resolve().parents[1] / "alembic.ini"))
+    cfg.set_main_option("script_location", str(Path(__file__).resolve().parents[1] / "alembic"))
+    cfg.attributes["url"] = url
+    import asyncio
+
+    await asyncio.to_thread(command.upgrade, cfg, "head")
+    engine = create_async_engine(url)
+    async with engine.connect() as conn:
+        tables = await conn.run_sync(lambda c: set(inspect(c).get_table_names()))
+    await engine.dispose()
+    assert set(Base.metadata.tables) <= tables
