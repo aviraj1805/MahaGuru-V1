@@ -74,9 +74,26 @@
       prose-code:before:content-none prose-code:after:content-none
       prose-pre:bg-[#14161f] prose-pre:text-[#e8e9ee] prose-pre:rounded-xl;
   }
+  .text-gradient {
+    @apply bg-gradient-to-r from-[#60A5FA] via-[#818CF8] to-[#22D3EE] bg-clip-text text-transparent;
+  }
+  .text-gradient-strong {
+    @apply bg-gradient-to-r from-[#1D4ED8] via-[#4F46E5] to-[#0891B2] bg-clip-text text-transparent;
+  }
+  .dark .text-gradient-strong {
+    @apply from-[#60A5FA] via-[#818CF8] to-[#22D3EE];
+  }
+  .bg-grid {
+    background-image: linear-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .reveal { @apply translate-y-6 opacity-0 transition duration-700 ease-out; }
+  .reveal.is-visible { @apply translate-y-0 opacity-100; }
   .prose-mg pre code { @apply bg-transparent p-0 text-inherit; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
 }
