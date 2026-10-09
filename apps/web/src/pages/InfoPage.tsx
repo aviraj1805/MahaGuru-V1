@@ -11,11 +11,11 @@ const HELPLINES = [
 export default function InfoPage({ page }: { page: 'safety' | 'privacy' }) {
   return (
     <PageShell>
-      <article className="container-page max-w-3xl py-12 sm:py-16">
+      <article className="container-page max-w-3xl py-16 sm:py-20">
         {page === 'safety' ? (
           <>
-            <p className="eyebrow">Safety & support</p>
-            <h1 className="mt-3 font-serif text-4xl">StudentGPT is a mentor, not a therapist</h1>
+            <p className="eyebrow text-brand">Safety & support</p>
+            <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">StudentGPT is a mentor, not a therapist</h1>
             <div className="mt-6 space-y-4 leading-relaxed text-muted">
               <p>
                 StudentGPT helps you reflect: it asks questions so you can understand your own thinking. It does not
@@ -28,7 +28,7 @@ export default function InfoPage({ page }: { page: 'safety' | 'privacy' }) {
                 professional alongside using StudentGPT. Your college counselling centre is a good first step.
               </p>
             </div>
-            <Card className="mt-8 divide-y divide-line">
+            <Card className="mt-10 divide-y divide-line">
               {HELPLINES.map(([name, contact, href]) => (
                 <a key={name} href={href} className="flex flex-col gap-0.5 p-4 hover:bg-sunken sm:flex-row sm:items-center sm:justify-between">
                   <span className="font-medium">{name}</span>
@@ -40,8 +40,8 @@ export default function InfoPage({ page }: { page: 'safety' | 'privacy' }) {
           </>
         ) : (
           <>
-            <p className="eyebrow">Privacy</p>
-            <h1 className="mt-3 font-serif text-4xl">Your data, plainly explained</h1>
+            <p className="eyebrow text-brand">Privacy</p>
+            <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">Your data, plainly explained</h1>
             <div className="mt-6 space-y-4 leading-relaxed text-muted">
               <p>
                 <strong className="text-ink">What we store.</strong> Your account email and an encrypted (hashed) password;

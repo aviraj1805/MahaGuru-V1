@@ -139,3 +139,13 @@ test('unknown routes show a 404 page', async ({ page }) => {
   await page.goto('/this/does/not/exist');
   await expect(page.getByRole('heading', { name: "This page doesn't exist" })).toBeVisible();
 });
+
+test('research and about pages present sourced content', async ({ page }) => {
+  await page.goto('/research');
+  await expect(page.getByRole('heading', { level: 1, name: 'The research behind MahaGuru AI' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'References' })).toBeVisible();
+  await noHorizontalScroll(page);
+  await page.goto('/about');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('guidance');
+  await noHorizontalScroll(page);
+});

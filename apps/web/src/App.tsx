@@ -12,6 +12,8 @@ const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
 const AuthPage = lazy(() => import('@/pages/AuthPage'));
 const AccountPage = lazy(() => import('@/pages/AccountPage'));
 const InfoPage = lazy(() => import('@/pages/InfoPage'));
+const ResearchPage = lazy(() => import('@/pages/ResearchPage'));
+const AboutPage = lazy(() => import('@/pages/AboutPage'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 function ScrollToTop() {
@@ -47,6 +49,8 @@ export default function App() {
           <Route path="/account" element={<AccountPage />} />
           <Route path="/safety" element={<InfoPage page="safety" />} />
           <Route path="/privacy" element={<InfoPage page="privacy" />} />
+          <Route path="/research" element={<ResearchPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

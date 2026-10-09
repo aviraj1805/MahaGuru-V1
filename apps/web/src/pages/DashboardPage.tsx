@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowRight, BookOpen, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpen, MessageSquareText } from 'lucide-react';
 import { PageShell } from '@/components/layout/AppShell';
 import { Alert, Button, Card, EmptyState, ErrorState, ProgressBar, Skeleton } from '@/components/ui/primitives';
 import { ClassroomCard } from '@/features/classroom/LearnHome';
@@ -35,10 +35,10 @@ export default function DashboardPage() {
     return (
       <PageShell>
         <div className="container-page max-w-2xl py-20 text-center">
-          <h1 className="font-serif text-4xl">Your dashboard</h1>
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Your dashboard</h1>
           <p className="mt-3 text-muted">Start a reflection or a classroom and your ongoing work will appear here.</p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button variant="reflect" onClick={() => navigate('/reflect')}><Sparkles className="h-4 w-4" /> Reflect with StudentGPT</Button>
+            <Button variant="reflect" onClick={() => navigate('/reflect')}><MessageSquareText className="h-4 w-4" /> Reflect with StudentGPT</Button>
             <Button variant="learn" onClick={() => navigate('/learn')}><BookOpen className="h-4 w-4" /> Start a Classroom</Button>
           </div>
         </div>
@@ -50,8 +50,9 @@ export default function DashboardPage() {
   return (
     <PageShell>
       <div className="container-page py-10 sm:py-14">
-        <p className="eyebrow">{greeting()}</p>
-        <h1 className="mt-2 font-serif text-4xl">{user?.display_name ? `Welcome back, ${user.display_name}` : 'Welcome back'}</h1>
+
+        <p className="text-sm font-medium text-muted">{greeting()}</p>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">{user?.display_name ? `Welcome back, ${user.display_name}` : 'Welcome back'}</h1>
         {user?.is_guest && (
           <Alert tone="info" className="mt-6 max-w-3xl" title="You're exploring as a guest">
             <Link to="/signup" className="font-medium underline">Create a free account</Link> to keep your work beyond 7 days and get a bigger daily allowance.
@@ -72,7 +73,7 @@ export default function DashboardPage() {
                 {continueRoom ? (
                   <>
                     <p className="eyebrow text-learn">Continue learning</p>
-                    <h2 className="mt-2 font-serif text-2xl">{continueRoom.title}</h2>
+                    <h2 className="mt-2 text-xl font-semibold tracking-tight">{continueRoom.title}</h2>
                     <p className="mt-1 text-sm text-muted">Next: {continueRoom.next_lesson_title}</p>
                     <ProgressBar value={continueRoom.percent} className="mt-4 max-w-md" />
                     <Button variant="learn" className="mt-5" onClick={() => navigate(`/learn/${continueRoom.id}/lesson/${continueRoom.next_lesson_id}`)}>
@@ -82,7 +83,7 @@ export default function DashboardPage() {
                 ) : (
                   <>
                     <p className="eyebrow text-learn">Classroom</p>
-                    <h2 className="mt-2 font-serif text-2xl">Learn something new</h2>
+                    <h2 className="mt-2 text-xl font-semibold tracking-tight">Learn something new</h2>
                     <p className="mt-1 text-sm text-muted">Turn a goal into a personalised roadmap with lessons, practice and projects.</p>
                     <Button variant="learn" className="mt-5" onClick={() => navigate('/learn')}>Set a learning goal <ArrowRight className="h-4 w-4" /></Button>
                   </>
@@ -104,7 +105,7 @@ export default function DashboardPage() {
 
             <section className="mt-12">
               <div className="flex items-end justify-between">
-                <h2 className="font-serif text-2xl">Classrooms</h2>
+                <h2 className="text-xl font-semibold tracking-tight">Classrooms</h2>
                 <Link to="/learn" className="text-sm text-learn hover:underline">New classroom</Link>
               </div>
               {dash.data.classrooms.length ? (
@@ -118,7 +119,7 @@ export default function DashboardPage() {
 
             <section className="mt-12">
               <div className="flex items-end justify-between">
-                <h2 className="font-serif text-2xl">Recent reflections</h2>
+                <h2 className="text-xl font-semibold tracking-tight">Recent reflections</h2>
                 <Link to="/reflect" className="text-sm text-reflect hover:underline">New reflection</Link>
               </div>
               {dash.data.reflections.length ? (
@@ -126,7 +127,7 @@ export default function DashboardPage() {
                   {dash.data.reflections.map((r) => (
                     <Link key={r.id} to={`/reflect/${r.id}`} className="flex items-center justify-between gap-3 p-4 hover:bg-sunken">
                       <span className="flex min-w-0 items-center gap-3">
-                        <Sparkles className="h-4 w-4 shrink-0 text-reflect" />
+                        <MessageSquareText className="h-4 w-4 shrink-0 text-reflect" />
                         <span className="truncate">{r.title}</span>
                       </span>
                       <span className="shrink-0 text-xs text-muted">{r.has_clarity ? 'Clarity reached' : STAGE_LABEL[r.stage]} · {timeAgo(r.updated_at)}</span>
@@ -134,7 +135,7 @@ export default function DashboardPage() {
                   ))}
                 </Card>
               ) : (
-                <Card className="mt-4"><EmptyState icon={<Sparkles className="h-5 w-5" />} title="No reflections yet">When something feels confusing, talk it through with StudentGPT.</EmptyState></Card>
+                <Card className="mt-4"><EmptyState icon={<MessageSquareText className="h-5 w-5" />} title="No reflections yet">When something feels confusing, talk it through with StudentGPT.</EmptyState></Card>
               )}
             </section>
           </>

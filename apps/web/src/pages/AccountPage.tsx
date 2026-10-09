@@ -62,7 +62,7 @@ export default function AccountPage() {
     return (
       <PageShell>
         <div className="container-page max-w-xl py-20 text-center">
-          <h1 className="font-serif text-3xl">Your account</h1>
+          <h1 className="font-display font-semibold tracking-tight text-3xl">Your account</h1>
           <p className="mt-3 text-muted">You're not signed in yet.</p>
           <div className="mt-6 flex justify-center gap-3">
             <Button onClick={() => navigate('/signup')}>Create free account</Button>
@@ -121,7 +121,7 @@ export default function AccountPage() {
   return (
     <PageShell>
       <div className="container-page max-w-3xl py-10 sm:py-14">
-        <h1 className="font-serif text-3xl sm:text-4xl">Account</h1>
+        <h1 className="font-display font-semibold tracking-tight text-3xl sm:text-4xl">Account</h1>
         {user.is_guest && (
           <Alert className="mt-6" tone="info" title="You're using MahaGuru as a guest">
             Your work is saved in this browser for 7 days.{' '}
@@ -131,7 +131,7 @@ export default function AccountPage() {
         )}
 
         <Card className="mt-8 p-6">
-          <h2 className="font-serif text-xl">About you</h2>
+          <h2 className="font-display font-semibold tracking-tight text-xl">About you</h2>
           <p className="mt-1 text-sm text-muted">Optional. StudentGPT and Classroom use this to personalise conversations and lessons.</p>
           <form onSubmit={saveProfile} className="mt-5 grid gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
@@ -158,7 +158,7 @@ export default function AccountPage() {
 
         {data?.usage && (
           <Card className="mt-6 space-y-4 p-6">
-            <h2 className="font-serif text-xl">Today's AI allowance</h2>
+            <h2 className="font-display font-semibold tracking-tight text-xl">Today's AI allowance</h2>
             <UsageMeter label="StudentGPT messages" used={data.usage.message.used} limit={data.usage.message.limit} />
             <UsageMeter label="Classroom AI actions" used={data.usage.classroom.used} limit={data.usage.classroom.limit} />
             <p className="text-xs text-muted">Allowances reset on a rolling 24-hour basis. MahaGuru runs on free-tier AI.</p>
@@ -167,7 +167,7 @@ export default function AccountPage() {
 
         {!user.is_guest && (
           <Card className="mt-6 p-6">
-            <h2 className="font-serif text-xl">Password</h2>
+            <h2 className="font-display font-semibold tracking-tight text-xl">Password</h2>
             <form onSubmit={changePassword} className="mt-5 grid gap-4 sm:grid-cols-2">
               <div>
                 <Label htmlFor="cur">Current password</Label>
@@ -187,7 +187,7 @@ export default function AccountPage() {
         )}
 
         <Card className="mt-6 border-danger/30 p-6">
-          <h2 className="font-serif text-xl">Delete {user.is_guest ? 'guest data' : 'account'}</h2>
+          <h2 className="font-display font-semibold tracking-tight text-xl">Delete {user.is_guest ? 'guest data' : 'account'}</h2>
           <p className="mt-1 text-sm text-muted">
             Permanently deletes your reflections, classrooms and progress. This cannot be undone.
           </p>

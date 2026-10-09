@@ -46,14 +46,14 @@ export default function NewClassroom() {
       <div className="container-page max-w-2xl py-16">
         {goal.length < 5 ? (
           <>
-            <h1 className="font-serif text-3xl">Start a new classroom</h1>
+            <h1 className="font-display font-semibold tracking-tight text-3xl">Start a new classroom</h1>
             <div className="mt-6">
               <GoalForm />
             </div>
           </>
         ) : error ? (
           <Card className="p-6">
-            <h1 className="font-serif text-2xl">We couldn't create your classroom</h1>
+            <h1 className="font-display font-semibold tracking-tight text-2xl">We couldn't create your classroom</h1>
             <Alert tone="danger" className="mt-4">
               {errorMessage(error)}
             </Alert>
@@ -74,7 +74,7 @@ export default function NewClassroom() {
         ) : (
           <div className="text-center">
             <Spinner className="justify-center" />
-            <h1 className="mt-4 font-serif text-2xl">Understanding your goal…</h1>
+            <h1 className="mt-4 font-display font-semibold tracking-tight text-2xl">Understanding your goal…</h1>
             <p className="mx-auto mt-2 max-w-md text-muted">"{goal}"</p>
             <p className="mt-6 text-sm text-muted">Preparing a few questions so your classroom fits you.</p>
           </div>
