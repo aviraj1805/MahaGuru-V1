@@ -32,8 +32,8 @@ class Settings(BaseSettings):
     # --- LLM provider -------------------------------------------------------------------
     llm_provider: ProviderName = "gemini"
     # Main model: conversation, teaching, curriculum. Fast model: state updates, grading.
-    llm_model: str = "gemini-2.5-flash"
-    llm_fast_model: str = "gemini-2.5-flash-lite"
+    llm_model: str = "gemini-3.5-flash-lite"
+    llm_fast_model: str = "gemini-3.5-flash-lite"
     llm_timeout_seconds: float = 60.0
     llm_max_concurrency: int = 4
     gemini_api_key: str | None = None
