@@ -6,7 +6,7 @@ from collections.abc import AsyncIterator
 import httpx
 
 from app.services.llm.base import ChatMessage, LLMError, LLMProvider, LLMResult, Usage
-from app.services.llm.http_util import post_with_retry, raise_for_status
+from app.services.llm.http_util import open_stream, post_with_retry
 
 
 class OpenAICompatProvider(LLMProvider):
@@ -68,10 +68,7 @@ class OpenAICompatProvider(LLMProvider):
         }
         produced = False
         try:
-            async with self._client.stream("POST", self._url, json=body) as response:
-                if response.status_code >= 400:
-                    await response.aread()
-                    raise_for_status(response, "LLM")
+            async with open_stream(self._client, self._url, provider="LLM", json=body) as response:
                 async for line in response.aiter_lines():
                     if not line.startswith("data:"):
                         continue

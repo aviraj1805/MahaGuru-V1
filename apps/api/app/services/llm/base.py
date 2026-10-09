@@ -56,6 +56,10 @@ class LLMRateLimited(LLMError):
         self.retry_after = retry_after
 
 
+class LLMBadRequest(LLMError):
+    """The provider rejected the request itself (HTTP 400), e.g. a setting the model doesn't take."""
+
+
 class LLMProvider(ABC):
     """Implementations: GeminiProvider, OpenAICompatProvider, FakeProvider (tests/offline only)."""
 
