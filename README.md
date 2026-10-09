@@ -75,6 +75,19 @@ A clarity summary can propose a learning goal, and one click turns it into a Cla
   </tr>
 </table>
 
+### Research and company pages
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/research.png" alt="Research page" /></td>
+    <td width="50%"><img src="docs/screenshots/about.png" alt="About page" /></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Research: sourced facts, principles from learning science and the evaluation method</sub></td>
+    <td align="center"><sub>About: mission, beliefs and how to contribute</sub></td>
+  </tr>
+</table>
+
 ### Dark theme and mobile
 
 <table>
@@ -109,7 +122,8 @@ A clarity summary can propose a learning goal, and one click turns it into a Cla
 
 - **Use without signing up.** Guests get a limited daily allowance; signing up keeps everything they created.
 - Email and password accounts with Argon2 hashing, revocable server-side sessions, CSRF protection and per-user daily quotas.
-- Responsive, accessible interface with light and dark themes.
+- Restrained, accessible interface with light and dark themes, built from a small token-based design system.
+- **Research page** with sourced facts about students in India, the learning-science principles behind each feature, the evaluation method and stated limitations.
 - **Provider-agnostic AI layer:** Google Gemini by default, or any OpenAI-compatible endpoint (Groq, OpenRouter, a local Ollama). Structured outputs are validated with Pydantic and repaired once before anything is saved.
 
 ## Tech stack
