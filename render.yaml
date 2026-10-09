@@ -1,0 +1,27 @@
+# Render Blueprint: one free web service (Docker). Database: use a free Neon Postgres
+# (https://neon.tech) and paste its connection string into DATABASE_URL.
+# Free services sleep after ~15 min idle; the first request then takes ~1 minute.
+services:
+  - type: web
+    name: mahaguru
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: LLM_PROVIDER
+        value: gemini
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: LLM_MODEL
+        value: gemini-2.5-flash
+      - key: LLM_FAST_MODEL
+        value: gemini-2.5-flash-lite
+      - key: WEB_ORIGIN
+        sync: false

@@ -234,3 +234,17 @@ async def test_detached_stream_survives_client_disconnect():
     assert await stream.__anext__() == "chunk0"
     await stream.aclose()  # client disconnects
     await asyncio.wait_for(finished.wait(), timeout=1)
+
+
+async def test_invalid_gemini_key_gets_clear_message():
+    def handler(request):
+        return httpx.Response(
+            400,
+            json={
+                "error": {"status": "INVALID_ARGUMENT", "details": [{"reason": "API_KEY_INVALID"}]}
+            },
+        )
+
+    with pytest.raises(LLMError) as exc:
+        await _gemini(handler).complete(system="s", messages=[ChatMessage("user", "x")], model="m")
+    assert "API key" in exc.value.user_message

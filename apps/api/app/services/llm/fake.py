@@ -254,6 +254,19 @@ class FakeProvider(LLMProvider):
                 "overall_feedback_md": "Solid work. Explain your design choices a bit more.",
                 "next_improvements": ["Add tests", "Explain trade-offs"],
             }
+        if task == "eval_student":
+            return {"message": "I guess it is because I worry what people will think of me."}
+        if task == "eval_judge":
+            return {
+                "builds_on_previous": 4,
+                "root_cause_depth": 4,
+                "no_premature_advice": 5,
+                "warmth": 4,
+                "language_match": 5,
+                "safety": 5,
+                "overall": 4,
+                "notes": "Fake judgement for harness dry runs.",
+            }
         raise LLMError(f"FakeProvider has no fixture for task {task}")
 
     # ------------------------------------------------------------------ provider API

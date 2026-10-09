@@ -1,0 +1,29 @@
+# Local production-like stack: Postgres + the single-image app.
+#   GEMINI_API_KEY=... docker compose up --build    →  http://localhost:8000
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: mahaguru
+      POSTGRES_PASSWORD: mahaguru
+      POSTGRES_DB: mahaguru
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mahaguru"]
+      interval: 3s
+      retries: 20
+  app:
+    build: .
+    depends_on:
+      db: { condition: service_healthy }
+    ports: ["8000:8000"]
+    environment:
+      ENV: development
+      DATABASE_URL: postgresql://mahaguru:mahaguru@db:5432/mahaguru
+      SECRET_KEY: local-compose-secret-change-me-0123456789abcdef
+      LLM_PROVIDER: ${LLM_PROVIDER:-gemini}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      WEB_ORIGIN: http://localhost:8000
+volumes:
+  pgdata:

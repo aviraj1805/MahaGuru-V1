@@ -22,7 +22,8 @@ def raise_for_status(response: httpx.Response, provider: str) -> None:
     detail = f"{provider} HTTP {response.status_code}: {response.text[:300]}"
     if response.status_code == 429:
         raise LLMRateLimited(detail, retry_after=retry_after_seconds(response))
-    if response.status_code in (401, 403):
+    invalid_key = response.status_code == 400 and "API_KEY_INVALID" in response.text
+    if response.status_code in (401, 403) or invalid_key:
         raise LLMError(
             detail,
             user_message="The AI service rejected our credentials. The site owner needs to "
