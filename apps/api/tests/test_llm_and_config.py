@@ -351,3 +351,48 @@ async def test_invalid_gemini_key_gets_clear_message():
     with pytest.raises(LLMError) as exc:
         await _gemini(handler).complete(system="s", messages=[ChatMessage("user", "x")], model="m")
     assert "API key" in exc.value.user_message
+
+
+def _quota_429(retry_delay: str) -> httpx.Response:
+    return httpx.Response(
+        429,
+        json={
+            "error": {
+                "code": 429,
+                "details": [
+                    {"@type": "type.googleapis.com/google.rpc.QuotaFailure", "violations": []},
+                    {
+                        "@type": "type.googleapis.com/google.rpc.RetryInfo",
+                        "retryDelay": retry_delay,
+                    },
+                ],
+            }
+        },
+    )
+
+
+async def test_gemini_daily_quota_fails_fast_with_a_daily_message(monkeypatch):
+    monkeypatch.setattr("app.services.llm.http_util.asyncio.sleep", _no_sleep)
+    calls = {"n": 0}
+
+    def handler(request):
+        calls["n"] += 1
+        return _quota_429("47286s")
+
+    with pytest.raises(LLMRateLimited) as exc:
+        await _gemini(handler).complete(system="s", messages=[ChatMessage("user", "x")], model="m")
+    assert calls["n"] == 1  # retrying a daily cap is pointless
+    assert exc.value.retry_after == 47286
+    assert "daily limit" in exc.value.user_message
+
+
+async def test_gemini_per_minute_limit_keeps_the_short_message(monkeypatch):
+    monkeypatch.setattr("app.services.llm.http_util.asyncio.sleep", _no_sleep)
+
+    def handler(request):
+        return _quota_429("30s")
+
+    with pytest.raises(LLMRateLimited) as exc:
+        await _gemini(handler).complete(system="s", messages=[ChatMessage("user", "x")], model="m")
+    assert exc.value.retry_after == 30
+    assert "wait a minute" in exc.value.user_message

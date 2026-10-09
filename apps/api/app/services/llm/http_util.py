@@ -7,11 +7,23 @@ import httpx
 
 from app.services.llm.base import LLMBadRequest, LLMError, LLMRateLimited
 
+# A rate limit that lasts longer than this is a daily cap, not a per-minute one.
+DAILY_LIMIT_SECONDS = 3600
+
 
 def retry_after_seconds(response: httpx.Response) -> float | None:
+    """From the Retry-After header, or Gemini's RetryInfo detail (e.g. "retryDelay": "47286s")."""
     value = response.headers.get("retry-after")
     if not value:
-        return None
+        try:
+            details = response.json().get("error", {}).get("details", [])
+            value = next(
+                str(d["retryDelay"]).rstrip("s")
+                for d in details
+                if isinstance(d, dict) and "retryDelay" in d
+            )
+        except (ValueError, AttributeError, StopIteration):
+            return None
     try:
         return float(value)
     except ValueError:
@@ -23,7 +35,14 @@ def raise_for_status(response: httpx.Response, provider: str) -> None:
         return
     detail = f"{provider} HTTP {response.status_code}: {response.text[:300]}"
     if response.status_code == 429:
-        raise LLMRateLimited(detail, retry_after=retry_after_seconds(response))
+        wait = retry_after_seconds(response)
+        exc = LLMRateLimited(detail, retry_after=wait)
+        if wait is not None and wait > DAILY_LIMIT_SECONDS:
+            exc.user_message = (
+                "The AI has reached its free daily limit. Please try again tomorrow. "
+                "Everything up to now is saved."
+            )
+        raise exc
     invalid_key = response.status_code == 400 and "API_KEY_INVALID" in response.text
     if response.status_code in (401, 403) or invalid_key:
         raise LLMError(
