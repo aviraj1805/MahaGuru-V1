@@ -11,7 +11,7 @@ RUN npm run build
 # ---- api runtime ----------------------------------------------------------------------
 FROM python:3.12-slim AS api
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
-COPY --from=ghcr.io/astral-sh/uv:0.8.17 /uv /usr/local/bin/uv
+RUN pip install --no-cache-dir uv==0.8.17
 WORKDIR /app/apps/api
 COPY apps/api/pyproject.toml apps/api/uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
