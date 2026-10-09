@@ -139,7 +139,7 @@ export function ClarityCardView({ clarity }: { clarity: Clarity }) {
         </section>
         <section>
           <h3 className="eyebrow">What seems to sit underneath</h3>
-          <p className="mt-2 font-serif text-lg leading-relaxed">{clarity.underneath}</p>
+          <p className="mt-2 font-display font-semibold tracking-tight text-lg leading-relaxed">{clarity.underneath}</p>
         </section>
         <Section title="What you realised" items={clarity.insights} />
         <Section title="Assumptions worth testing" items={clarity.assumptions_to_question} />

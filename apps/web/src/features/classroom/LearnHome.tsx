@@ -64,7 +64,7 @@ export function GoalForm({ compact }: { compact?: boolean }) {
               key={e}
               type="button"
               onClick={() => navigate(`/learn/new?goal=${encodeURIComponent(e)}`)}
-              className="rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm text-muted hover:border-learn/40 hover:text-ink"
+              className="rounded-md border border-line bg-surface px-3.5 py-1.5 text-sm text-muted hover:border-learn/40 hover:text-ink"
             >
               {e}
             </button>
@@ -86,7 +86,7 @@ export function ClassroomCard({ c }: { c: ClassroomSummary }) {
           </div>
           <Badge tone={s.tone}>{s.label}</Badge>
         </div>
-        <h3 className="mt-4 font-serif text-lg leading-snug">{c.title}</h3>
+        <h3 className="mt-4 font-display font-semibold tracking-tight text-lg leading-snug">{c.title}</h3>
         <p className="mt-1 line-clamp-2 text-sm text-muted">{c.goal_text}</p>
         {(c.status === 'active' || c.status === 'completed') && (
           <div className="mt-4">
@@ -120,7 +120,7 @@ export default function LearnHome() {
       <div className="container-page py-10 sm:py-14">
         <div className="max-w-2xl">
           <p className="eyebrow text-learn">Classroom</p>
-          <h1 className="mt-2 font-serif text-4xl">What do you want to learn?</h1>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">What do you want to learn?</h1>
           <p className="mt-3 text-muted">
             Describe a goal. We'll ask a couple of questions, check what you already know, and build a roadmap made for
             you, with lessons, a teacher, practice and progress tracking.
@@ -130,7 +130,7 @@ export default function LearnHome() {
           <GoalForm />
         </div>
 
-        <h2 className="mt-14 font-serif text-2xl">Your classrooms</h2>
+        <h2 className="mt-14 font-display font-semibold tracking-tight text-2xl">Your classrooms</h2>
         <div className="mt-5">
           {!session?.user ? (
             <Card>

@@ -10,7 +10,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        serif: ['Fraunces', 'ui-serif', 'Georgia', 'serif'],
+        display: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       colors: {
         bg: token('bg'),
@@ -26,10 +26,10 @@ export default {
         warn: { DEFAULT: token('warn'), soft: token('warn-soft') },
         ok: { DEFAULT: token('ok'), soft: token('ok-soft') },
       },
-      borderRadius: { xl: '0.875rem', '2xl': '1.125rem', '3xl': '1.5rem' },
+      borderRadius: { lg: '0.5rem', xl: '0.625rem', '2xl': '0.75rem', '3xl': '1rem' },
       boxShadow: {
-        soft: '0 1px 2px rgb(16 24 40 / 0.04), 0 4px 16px -4px rgb(16 24 40 / 0.08)',
-        lift: '0 2px 4px rgb(16 24 40 / 0.04), 0 12px 32px -8px rgb(16 24 40 / 0.14)',
+        soft: '0 1px 2px rgb(15 23 42 / 0.04)',
+        lift: '0 1px 2px rgb(15 23 42 / 0.05), 0 8px 24px -12px rgb(15 23 42 / 0.18)',
       },
       keyframes: {
         'fade-up': { from: { opacity: 0, transform: 'translateY(6px)' }, to: { opacity: 1, transform: 'none' } },
