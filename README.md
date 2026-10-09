@@ -41,6 +41,12 @@ A clarity summary can propose a learning goal, and one click turns it into a Cla
 
 ## Screenshots
 
+### Homepage
+
+<p align="center">
+  <img src="docs/screenshots/home-products.png" alt="Interactive product switcher on the homepage" width="100%" />
+</p>
+
 ### StudentGPT
 
 <table>
