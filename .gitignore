@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.db
+*.db-journal
+
+# Node
+node_modules/
+dist/
+.vite/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# Private data (e.g. the original MahaGuru dataset); never commit
+data/private/
+data/studentgpt/eval_runs/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

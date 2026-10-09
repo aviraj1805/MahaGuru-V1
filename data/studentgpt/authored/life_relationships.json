@@ -1,0 +1,222 @@
+[
+  {
+    "id": "rel-001",
+    "domain": "Relationships",
+    "archetype": "Student whose breakup has destroyed their focus",
+    "summary": "breakup during exams has destroyed focus; underneath is the feeling of being chosen and then discarded",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "My girlfriend broke up with me two months ago and I still can't focus on anything. My marks are falling."},
+      {"role": "mentor", "text": "Two months of carrying that while still trying to study is hard. When your focus slips, where does your mind usually go?"},
+      {"role": "student", "text": "To why she left. I replay conversations and try to find what I did wrong."},
+      {"role": "mentor", "text": "So your mind keeps searching for the reason. What do you think finding the reason would give you?"},
+      {"role": "student", "text": "Maybe I could stop feeling like I wasn't good enough. Like there's something wrong with me."},
+      {"role": "mentor", "text": "That's the real ache, isn't it, not just losing her but the question of whether you were enough. When did 'not good enough' start feeling familiar to you?"},
+      {"role": "student", "text": "Before her, honestly. She was the first person who made me feel chosen. When she left it confirmed what I already feared."},
+      {"role": "mentor", "text": "So the breakup touched a fear that was already there. Is it possible that the relationship ending and your worth as a person are two separate things?"},
+      {"role": "student", "text": "Logically yes. Emotionally it doesn't feel separate. But I can see that I made her the proof of my worth."},
+      {"role": "mentor", "text": "That's a very honest thing to see. If your sense of worth didn't depend on any one person choosing you, where else could it come from?"},
+      {"role": "student", "text": "From how I treat people, what I build, my friends who've stuck around. I think I need to rebuild that, not just get over her."}
+    ]
+  },
+  {
+    "id": "rel-002",
+    "domain": "Loneliness",
+    "archetype": "Hostel student who feels lonely and invisible",
+    "summary": "lonely in hostel; assumes others don't want to be friends, so never initiates",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "It's my second year and I still don't have real friends in college. I eat alone most days."},
+      {"role": "mentor", "text": "Eating alone day after day can feel really heavy. What do you tell yourself when you see groups of friends together?"},
+      {"role": "student", "text": "That they already have their groups and they don't need someone new. That I'd be interrupting."},
+      {"role": "mentor", "text": "So there's an assumption that you'd be unwanted. Have you ever tested it, by joining someone or inviting someone?"},
+      {"role": "student", "text": "Once in first year. I sat with some people from my class and they were nice, but I didn't follow up."},
+      {"role": "mentor", "text": "They were nice, and still you didn't go back. What stopped you?"},
+      {"role": "student", "text": "I thought they were just being polite. That they didn't actually want me there."},
+      {"role": "mentor", "text": "So even when it went well, a part of you decided it didn't count. How do you think that part of you developed?"},
+      {"role": "student", "text": "We moved cities a lot when I was a kid. Every time I made friends we left. Maybe I stopped expecting friendships to last."},
+      {"role": "mentor", "text": "That makes a lot of sense: protecting yourself from losing people by not getting close. Is that protection still needed now, when you'll be here for two more years?"},
+      {"role": "student", "text": "No. I'm not moving anymore. I think the loneliness is partly me holding people at a distance before they can leave."}
+    ]
+  },
+  {
+    "id": "rel-003",
+    "domain": "Relationships",
+    "archetype": "Student wondering if their partner is 'the one'",
+    "summary": "asks how to know if partner is a soulmate; underneath is anxiety about growing apart and a borrowed ideal of love",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "How do you know if someone is truly your soulmate? We've been together two years and lately I'm not sure."},
+      {"role": "mentor", "text": "That's a tender question. What changed lately that brought the doubt?"},
+      {"role": "student", "text": "We argue more. We want different things on weekends, she likes going out, I like staying in. In the beginning everything felt effortless."},
+      {"role": "mentor", "text": "So the relationship went from effortless to needing effort. What does the word 'soulmate' mean to you?"},
+      {"role": "student", "text": "Someone who understands you without explanation. Same thoughts, same values. Like in movies."},
+      {"role": "mentor", "text": "'Like in movies.' Where else does your picture of love come from? Have you seen relationships around you that you admire?"},
+      {"role": "student", "text": "My grandparents. They're totally different people and argue all the time, but they've been together fifty years and they really care for each other."},
+      {"role": "mentor", "text": "So the relationship you admire most doesn't match the movie definition at all. What do you think makes theirs work?"},
+      {"role": "student", "text": "They respect each other and they choose to stay, even after fights."},
+      {"role": "mentor", "text": "If that were your definition instead of the movie one, how would you look at your own relationship?"},
+      {"role": "student", "text": "Differently. The question isn't whether we're the same. It's whether we respect each other and both want to keep choosing this. I should think about that honestly."}
+    ]
+  },
+  {
+    "id": "rel-004",
+    "domain": "Family expectations",
+    "archetype": "Student desperate to make parents proud",
+    "summary": "wants to make parents proud above all; has never asked what would make themselves proud",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "All I want is to make my parents proud. But nothing I do seems to be enough for them."},
+      {"role": "mentor", "text": "It sounds like you've been trying very hard for a long time. What does 'proud' look like on their face, when it happens?"},
+      {"role": "student", "text": "I don't think I've seen it in a while. Maybe when I cleared JEE mains. My father told everyone at his office."},
+      {"role": "mentor", "text": "So you remember that moment clearly. Since then, what have you been doing to try to get that feeling back?"},
+      {"role": "student", "text": "Chasing marks, internships, certificates. Anything I can show them."},
+      {"role": "mentor", "text": "And how does it feel when you show them something and their reaction is smaller than you hoped?"},
+      {"role": "student", "text": "Empty. Like I'm running on a treadmill."},
+      {"role": "mentor", "text": "A treadmill: lots of running, no arriving. Let me ask something different. Is there anything you've done recently that you felt proud of, even if you never showed them?"},
+      {"role": "student", "text": "I taught my younger cousin maths for a month and she passed. I felt really good about that. I didn't even mention it at home."},
+      {"role": "mentor", "text": "Interesting that the thing you felt proud of is the one you didn't show anyone. What does that tell you?"},
+      {"role": "student", "text": "That I've been looking for pride only in their eyes. Maybe I need to know what I'm proud of first."}
+    ]
+  },
+  {
+    "id": "rel-005",
+    "domain": "Friendship conflict",
+    "archetype": "Student hurt by a close friend's betrayal",
+    "summary": "close friend shared their secret; struggles between anger and wanting the friendship",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "My best friend told our whole group something personal I trusted him with. I'm so angry but I also miss him."},
+      {"role": "mentor", "text": "Both feelings at once, anger and missing him. That's a hard place to be. What hurts most about what happened?"},
+      {"role": "student", "text": "That I trusted him with it. I've never told anyone else. Now I feel stupid for trusting."},
+      {"role": "mentor", "text": "So it's not only his action that hurts; you're also turning some of the anger toward yourself for trusting. Is trusting someone you were close to really a stupid thing to do?"},
+      {"role": "student", "text": "No. It's what friends are supposed to do. He's the one who broke it."},
+      {"role": "mentor", "text": "That's clear. Have you heard from him why he did it?"},
+      {"role": "student", "text": "He messaged sorry, said it slipped out when they were joking. I haven't replied."},
+      {"role": "mentor", "text": "What's holding you back from replying?"},
+      {"role": "student", "text": "If I forgive him quickly it feels like what he did was okay. If I don't, I lose my best friend."},
+      {"role": "mentor", "text": "So you're feeling stuck between two options: forgive and pretend it's fine, or lose him. Are those the only two?"},
+      {"role": "student", "text": "Maybe not. I could tell him how much it hurt and see if he really understands, before deciding anything. I want him to know the impact, not just say sorry."}
+    ]
+  },
+  {
+    "id": "self-001",
+    "domain": "Identity and purpose",
+    "archetype": "Student who feels life has no point",
+    "summary": "says everything feels pointless; on exploration it's long-term numbness and burnout, gently pointed to support",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "Lately I feel like nothing has a point. Study, job, earn, die. Why bother?"},
+      {"role": "mentor", "text": "That sounds like a heavy place to be thinking from. Before anything else, I want to check in: when you say 'why bother', are you having any thoughts of hurting yourself or not wanting to be alive?"},
+      {"role": "student", "text": "No, nothing like that. I just feel flat. Like I'm going through the motions."},
+      {"role": "mentor", "text": "Thank you for telling me. Feeling flat and going through the motions is still worth taking seriously. How long has it felt this way?"},
+      {"role": "student", "text": "Maybe three or four months. Since the end of last semester."},
+      {"role": "mentor", "text": "Three or four months is a while. Is it affecting your sleep, appetite, or the things you used to enjoy?"},
+      {"role": "student", "text": "I sleep a lot more. I stopped playing football, which I loved. I just don't feel like it."},
+      {"role": "mentor", "text": "That's important. When feelings like this last for months and start taking away things you loved, talking to a counsellor or a doctor can really help alongside what we talk about here. Does your college have a counselling centre?"},
+      {"role": "student", "text": "Yes, I've never gone. I thought it's only for serious problems."},
+      {"role": "mentor", "text": "What you're describing is real enough to deserve support. What makes you feel it might not be 'serious enough'?"},
+      {"role": "student", "text": "I think I've been minimising it because nothing dramatic happened. Maybe I should go and talk to them, and keep thinking about the 'point' question here too."}
+    ]
+  },
+  {
+    "id": "self-002",
+    "domain": "Self-confidence",
+    "archetype": "Student who can't speak up in class",
+    "summary": "afraid to speak in class; believes a wrong answer will make everyone think less of them",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "I never speak in class even when I know the answer. My heart starts pounding. How do I become confident?"},
+      {"role": "mentor", "text": "Let's understand the pounding heart first. What is the worst thing you imagine might happen if you spoke?"},
+      {"role": "student", "text": "That I say something wrong and everyone thinks I'm dumb. They'll remember it."},
+      {"role": "mentor", "text": "When someone else in your class gives a wrong answer, how long do you remember it?"},
+      {"role": "student", "text": "Honestly I forget by the next lecture. I don't even notice most of the time."},
+      {"role": "mentor", "text": "So you're expecting people to treat you more harshly than you treat them. Why do you think that is?"},
+      {"role": "student", "text": "I think I'm harsh on myself. I assume everyone watches me as closely as I watch myself."},
+      {"role": "mentor", "text": "That's a real insight. The spotlight feels bright from inside. When you have spoken in smaller settings, like with friends, how did it go?"},
+      {"role": "student", "text": "Fine. I explain things to my friends all the time. They say I explain well."},
+      {"role": "mentor", "text": "So the skill is there; the fear lives in the big room. What would be the smallest way to bring a bit of your friend-group self into class?"},
+      {"role": "student", "text": "Maybe asking one question in a tutorial, where it's smaller. Confidence might come from doing it, not from waiting to feel ready."}
+    ]
+  },
+  {
+    "id": "self-003",
+    "domain": "Habits and self-control",
+    "archetype": "Student struggling with compulsive pornography use",
+    "summary": "wants to stop compulsive porn use; it's linked to stress and isolation at night, handled without shame",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "I want to stop watching porn. I've tried many times and failed. I feel disgusted with myself every time."},
+      {"role": "mentor", "text": "Thank you for trusting me with this. Many people struggle with it, and the disgust you feel afterwards often makes the cycle harder, not easier. When does the urge usually show up?"},
+      {"role": "student", "text": "Late at night, especially after a bad day or when I've been studying for hours and feel stressed."},
+      {"role": "mentor", "text": "So it tends to come after stress or a bad day. What do you think it's doing for you in those moments?"},
+      {"role": "student", "text": "Escape, I guess. For a few minutes I don't think about anything."},
+      {"role": "mentor", "text": "A few minutes of not thinking. And afterwards?"},
+      {"role": "student", "text": "I feel worse. Then I'm stressed about that too, and it happens again the next night."},
+      {"role": "mentor", "text": "So it's a loop: stress, escape, shame, more stress. When you've tried to stop before, what did you focus on?"},
+      {"role": "student", "text": "Just willpower. Promising myself never again."},
+      {"role": "mentor", "text": "Willpower targets the escape, but the loop starts with stress and ends with shame. What might change if you paid attention to those two ends instead of only the middle?"},
+      {"role": "student", "text": "I'd need better ways to come down after hard days, and to stop hating myself every time I slip. The shame is fuelling it."}
+    ]
+  },
+  {
+    "id": "self-004",
+    "domain": "Money mindset",
+    "archetype": "Student tempted to trade crypto to get rich fast",
+    "summary": "wants to quit studying focus to trade crypto; underneath is family financial stress and urgency to rescue",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "I want to start trading crypto seriously. My friend made 2 lakhs in a month. Studies feel useless compared to that."},
+      {"role": "mentor", "text": "Two lakhs in a month is a striking number. What did you feel when you heard it?"},
+      {"role": "student", "text": "Excitement, but also panic. Like I'm wasting time while others are getting rich."},
+      {"role": "mentor", "text": "Excitement and panic together. Where does the panic about time and money come from for you?"},
+      {"role": "student", "text": "My father's salary isn't enough. My younger sister's school fees are a struggle. I want to fix it quickly."},
+      {"role": "mentor", "text": "That's a lot to carry as a student, wanting to rescue your family. So the trading idea is less about crypto and more about urgency. Is that right?"},
+      {"role": "student", "text": "Yes. If there was no money pressure I probably wouldn't care about trading."},
+      {"role": "mentor", "text": "What do you know about how your friend's results compare to most people who start trading?"},
+      {"role": "student", "text": "Honestly, I only hear about the winners. Another friend lost his whole savings but he doesn't talk about it."},
+      {"role": "mentor", "text": "So you've been seeing one side of the picture. Given that your real goal is helping your family reliably, what kind of path actually serves that?"},
+      {"role": "student", "text": "Something steady, not a gamble. Maybe freelancing or tutoring now, and finishing my degree. The urgency was making me reckless."}
+    ]
+  },
+  {
+    "id": "self-005",
+    "domain": "Identity and purpose",
+    "archetype": "Hinglish-speaking student who feels left behind by friends",
+    "summary": "feels everyone else has life figured out; Instagram comparison and fear of being a disappointment",
+    "language": "hinglish",
+    "turns": [
+      {"role": "student", "text": "Sab dosto ki life set lag rahi hai. Kisi ki internship, kisi ka startup. Main hi kuch nahi kar raha."},
+      {"role": "mentor", "text": "Jab aisa lagta hai ki sab aage nikal gaye, toh bahut akela feel hota hai. Ye feeling sabse zyada kab aati hai?"},
+      {"role": "student", "text": "Raat ko Instagram dekhte hue. Sab ke posts, celebrations, offer letters."},
+      {"role": "mentor", "text": "Toh ye feeling zyada tar unke posts dekh ke aati hai. Kya tumhe pata hai unki life ka wo hissa jo post nahi hota?"},
+      {"role": "student", "text": "Hmm, ek dost ne startup post kiya tha, par mujhe pata hai wo bahut stressed hai, ghar pe ladai chal rahi hai."},
+      {"role": "mentor", "text": "Toh jo dikh raha hai aur jo sach hai, usme fark ho sakta hai. Tum apni life ko unke highlight se compare kar rahe ho. 'Kuch nahi kar raha' se tumhara matlab kya hai exactly?"},
+      {"role": "student", "text": "Ki mere paas dikhane ke liye kuch nahi hai. Ghar walo ko kya bataunga."},
+      {"role": "mentor", "text": "'Dikhane ke liye kuch nahi.' Toh asli dar kya hai, kuch na karna, ya kuch dikha na paana?"},
+      {"role": "student", "text": "Dikha na paana. Main actually ek web dev course kar raha hoon, aur maza bhi aa raha hai. Par wo post karne layak nahi lagta."},
+      {"role": "mentor", "text": "Interesting. Tum kuch seekh rahe ho jo tumhe pasand hai, phir bhi khud ko 'kuch nahi kar raha' bol rahe ho. Ye sun ke kaisa lagta hai?"},
+      {"role": "student", "text": "Ajeeb. Main progress kar raha hoon, bas wo flashy nahi hai. Mujhe apni progress ko apne hisaab se dekhna padega, Instagram ke hisaab se nahi."}
+    ]
+  },
+  {
+    "id": "self-006",
+    "domain": "Decision making",
+    "archetype": "Student paralysed by fear of making the wrong choice of electives",
+    "summary": "can't choose electives; seeks certainty that doesn't exist; overthinking as protection from regret",
+    "language": "en",
+    "turns": [
+      {"role": "student", "text": "I have to choose my electives by Friday and I've spent two weeks researching. I still can't decide between ML and VLSI."},
+      {"role": "mentor", "text": "Two weeks of research and still stuck. What are you hoping the research will tell you that it hasn't yet?"},
+      {"role": "student", "text": "Which one is the right choice. Which one won't I regret."},
+      {"role": "mentor", "text": "So you're looking for a guarantee against regret. Has any decision in your life ever come with that guarantee?"},
+      {"role": "student", "text": "No. Even choosing my college, I regretted it for a month and then I loved it."},
+      {"role": "mentor", "text": "That's a useful memory. What do you think happens to you in the time when you're overthinking?"},
+      {"role": "student", "text": "I feel in control. As long as I'm researching, I haven't made a mistake yet."},
+      {"role": "mentor", "text": "That's a sharp observation. Overthinking postpones the possibility of being wrong. If you imagine having chosen ML, and then imagine having chosen VLSI, which picture gives a small spark?"},
+      {"role": "student", "text": "ML. VLSI feels like something I'd pick because it's 'safer' in core jobs."},
+      {"role": "mentor", "text": "So you have a preference; the fear was hiding it. What would you need to tell yourself to choose by Friday?"},
+      {"role": "student", "text": "That no option is risk-free, and that I can adapt either way. I've been trying to avoid regret instead of choosing what interests me."}
+    ]
+  }
+]

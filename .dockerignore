@@ -1,0 +1,13 @@
+**/node_modules
+**/.venv
+**/dist
+**/__pycache__
+**/*.db
+**/.pytest_cache
+**/.ruff_cache
+**/test-results
+**/playwright-report
+.git
+data/private
+data/studentgpt/eval_runs
+**/.env
