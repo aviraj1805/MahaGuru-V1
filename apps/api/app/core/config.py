@@ -32,13 +32,14 @@ class Settings(BaseSettings):
     # --- LLM provider -------------------------------------------------------------------
     llm_provider: ProviderName = "gemini"
     # Main model: conversation, teaching, curriculum. Fast model: state updates, grading.
-    llm_model: str = "gemini-2.5-flash"
-    llm_fast_model: str = "gemini-2.5-flash-lite"
+    llm_model: str = "gemini-3.5-flash-lite"
+    llm_fast_model: str = "gemini-3.5-flash-lite"
     llm_timeout_seconds: float = 60.0
     llm_max_concurrency: int = 4
     gemini_api_key: str | None = None
     gemini_base_url: str = "https://generativelanguage.googleapis.com/v1beta"
-    # Optional: thinking budget for Gemini 2.5 models (0 disables thinking, saving quota).
+    # Thinking budget for Gemini Flash models (0 turns thinking off: faster, saves quota).
+    # Unset (empty) leaves the model default.
     gemini_thinking_budget: int | None = 0
     # OpenAI-compatible endpoints: Groq, OpenRouter, Ollama (http://localhost:11434/v1), etc.
     openai_base_url: str = "https://api.groq.com/openai/v1"

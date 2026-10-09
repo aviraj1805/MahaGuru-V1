@@ -118,6 +118,109 @@ async def test_gemini_stream_parses_sse():
     assert "".join(out) == "Hello" and usage.output_tokens == 2
 
 
+@pytest.mark.parametrize(
+    ("model", "budget", "expected"),
+    [
+        ("gemini-2.5-flash", 0, {"thinkingBudget": 0}),
+        ("gemini-3.6-flash", 0, {"thinkingLevel": "minimal"}),
+        ("gemini-3.5-flash-lite", 0, {"thinkingLevel": "minimal"}),
+        ("gemini-flash-latest", 0, {"thinkingLevel": "minimal"}),
+        ("gemini-3.6-flash", 512, {"thinkingBudget": 512}),
+        ("gemini-3.6-flash", None, None),
+        ("gemini-2.5-pro", 0, None),
+    ],
+)
+def test_gemini_thinking_is_off_for_flash_models(model, budget, expected):
+    p = GeminiProvider(api_key="k", base_url="https://gemini.test/v1beta", thinking_budget=budget)
+    assert p._thinking_options(model)[0] == expected
+
+
+def _thinking_picky_handler(seen: list, stream: bool = False):
+    """Like gemini-3.8-flash: rejects thinkingLevel "minimal" but accepts thinkingBudget 0."""
+
+    def handler(request):
+        thinking = json.loads(request.content)["generationConfig"].get("thinkingConfig")
+        seen.append(thinking)
+        if thinking == {"thinkingLevel": "minimal"}:
+            return httpx.Response(400, json={"error": {"message": "MINIMAL is not supported"}})
+        reply = {"candidates": [{"content": {"parts": [{"text": "ok"}]}}]}
+        if stream:
+            return httpx.Response(200, text=f"data: {json.dumps(reply)}\r\n\r\n")
+        return httpx.Response(200, json=reply)
+
+    return handler
+
+
+async def test_gemini_falls_back_to_a_thinking_setting_the_model_accepts():
+    seen: list = []
+    p = _gemini(_thinking_picky_handler(seen))
+    for _ in range(2):
+        result = await p.complete(
+            system="s", messages=[ChatMessage("user", "x")], model="gemini-3.8-flash"
+        )
+        assert result.text == "ok"
+    # The rejected setting is tried once; afterwards the accepted one is used directly.
+    assert seen == [{"thinkingLevel": "minimal"}, {"thinkingBudget": 0}, {"thinkingBudget": 0}]
+
+
+async def test_gemini_stream_falls_back_to_a_thinking_setting_the_model_accepts():
+    seen: list = []
+    p = _gemini(_thinking_picky_handler(seen, stream=True))
+    out = [
+        t
+        async for t in p.stream(
+            system="s", messages=[ChatMessage("user", "x")], model="gemini-3.8-flash"
+        )
+    ]
+    assert out == ["ok"] and seen == [{"thinkingLevel": "minimal"}, {"thinkingBudget": 0}]
+
+
+async def test_gemini_bad_request_still_fails_when_no_setting_helps():
+    def handler(request):
+        return httpx.Response(400, json={"error": {"message": "bad"}})
+
+    with pytest.raises(LLMError):
+        await _gemini(handler).complete(
+            system="s", messages=[ChatMessage("user", "x")], model="gemini-3.8-flash"
+        )
+
+
+async def test_gemini_stream_retries_transient_errors_before_first_token(monkeypatch):
+    monkeypatch.setattr("app.services.llm.http_util.asyncio.sleep", _no_sleep)
+    calls = {"n": 0}
+    sse = f"data: {json.dumps({'candidates': [{'content': {'parts': [{'text': 'ok'}]}}]})}\r\n\r\n"
+
+    def handler(request):
+        calls["n"] += 1
+        if calls["n"] < 2:
+            return httpx.Response(503, text="high demand")
+        return httpx.Response(200, text=sse, headers={"content-type": "text/event-stream"})
+
+    out = [
+        t
+        async for t in _gemini(handler).stream(
+            system="s", messages=[ChatMessage("user", "x")], model="m"
+        )
+    ]
+    assert out == ["ok"] and calls["n"] == 2
+
+
+async def test_gemini_stream_gives_up_after_bounded_retries(monkeypatch):
+    monkeypatch.setattr("app.services.llm.http_util.asyncio.sleep", _no_sleep)
+    calls = {"n": 0}
+
+    def handler(request):
+        calls["n"] += 1
+        return httpx.Response(429, json={"error": "quota"})
+
+    with pytest.raises(LLMRateLimited):
+        async for _ in _gemini(handler).stream(
+            system="s", messages=[ChatMessage("user", "x")], model="m"
+        ):
+            pass
+    assert calls["n"] == 3
+
+
 async def test_rate_limit_maps_to_friendly_error(monkeypatch):
     monkeypatch.setattr("app.services.llm.http_util.asyncio.sleep", _no_sleep)
 

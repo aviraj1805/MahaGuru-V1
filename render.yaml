@@ -20,8 +20,8 @@ services:
       - key: GEMINI_API_KEY
         sync: false
       - key: LLM_MODEL
-        value: gemini-2.5-flash
+        value: gemini-3.5-flash-lite
       - key: LLM_FAST_MODEL
-        value: gemini-2.5-flash-lite
+        value: gemini-3.5-flash-lite
       - key: WEB_ORIGIN
         sync: false
