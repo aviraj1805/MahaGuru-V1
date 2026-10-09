@@ -1,81 +1,259 @@
+<div align="center">
+
+<img src="apps/web/public/favicon.svg" width="72" height="72" alt="MahaGuru AI logo" />
+
 # MahaGuru AI
 
-**From confusion to clarity.** An open-source AI platform for college students with two products:
+**From confusion to clarity.**
+An open-source AI mentor and personalised classroom for college students.
 
-- **StudentGPT (reflect).** A reflective mentor that asks before it answers. It helps students find the root of their confusion (fears, expectations, borrowed goals) through thoughtful questions, instead of handing out advice. It has built-in safety support and ends with a clarity summary the student keeps.
-- **Classroom (learn and execute).** Turns a learning goal into a personalised roadmap: clarifying questions, a short diagnostic, modules and lessons written for the student's level, an AI teacher per lesson, practice quizzes with feedback, milestone projects graded against a rubric, mastery tracking, and a roadmap that adapts.
+[Live demo](https://mahaguru-ai.onrender.com) &nbsp;&middot;&nbsp;
+[Architecture](docs/architecture.md) &nbsp;&middot;&nbsp;
+[Deployment](docs/deployment.md) &nbsp;&middot;&nbsp;
+[Evaluation](docs/evaluation.md)
 
-It runs on **free-tier AI** (Google Gemini by default; any OpenAI-compatible endpoint such as Groq, OpenRouter or a local Ollama also works) and deploys as **one free web service plus a free Postgres**.
+[![CI](https://github.com/aviraj1805/MahaGuru-V1/actions/workflows/ci.yml/badge.svg)](https://github.com/aviraj1805/MahaGuru-V1/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Python](https://img.shields.io/badge/python-3.11%2B-3776AB)
+![React](https://img.shields.io/badge/react-18-149ECA)
 
-| | |
+</div>
+
+<p align="center">
+  <img src="docs/screenshots/home.png" alt="MahaGuru AI homepage" width="100%" />
+</p>
+
+---
+
+## Overview
+
+Most AI tools for students jump straight to answers. MahaGuru AI is built around a different idea: a student who is confused about their direction first needs to understand *why*, and only then needs a plan. The platform pairs two products that hand off to each other.
+
+| Product | Purpose | What the student gets |
+|---|---|---|
+| **StudentGPT** | Reflect | A mentor that asks before it answers. It helps the student find what sits underneath the confusion (fears, expectations, borrowed goals) and closes with a clarity summary they keep. |
+| **Classroom** | Learn and execute | A learning goal turned into a personalised roadmap: a short diagnostic, modules and lessons written for the student's level, an AI teacher per lesson, practice quizzes, graded projects and progress that adapts. |
+
+A clarity summary can propose a learning goal, and one click turns it into a Classroom.
+
+> **Live demo:** [mahaguru-ai.onrender.com](https://mahaguru-ai.onrender.com)
+> Hosted on a free tier. The first visit after a period of inactivity can take up to a minute while the server wakes up, and AI requests are subject to a daily free quota. Demo data may be reset at any time.
+
+## Screenshots
+
+### StudentGPT
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/reflect-conversation.png" alt="StudentGPT conversation" /></td>
+    <td width="50%"><img src="docs/screenshots/reflect-clarity.png" alt="StudentGPT clarity summary" /></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>A reflective conversation: one thoughtful question at a time</sub></td>
+    <td align="center"><sub>The clarity summary the student keeps</sub></td>
+  </tr>
+</table>
+
+### Classroom
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/classroom-intake.png" alt="Classroom intake questions" /></td>
+    <td width="50%"><img src="docs/screenshots/classroom-roadmap.png" alt="Personalised roadmap" /></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Clarifying questions fit the plan to the student</sub></td>
+    <td align="center"><sub>A personalised, versioned roadmap with progress</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/classroom-lesson.png" alt="Lesson view" /></td>
+    <td width="50%"><img src="docs/screenshots/dashboard.png" alt="Student dashboard" /></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Lessons written for the student's level, with an AI teacher</sub></td>
+    <td align="center"><sub>Dashboard: reflections, classrooms and where to continue</sub></td>
+  </tr>
+</table>
+
+### Dark theme and mobile
+
+<table>
+  <tr>
+    <td width="64%"><img src="docs/screenshots/home-dark.png" alt="Dark theme" /></td>
+    <td width="18%"><img src="docs/screenshots/mobile-home.png" alt="Mobile homepage" /></td>
+    <td width="18%"><img src="docs/screenshots/mobile-dashboard.png" alt="Mobile dashboard" /></td>
+  </tr>
+</table>
+
+## Features
+
+### StudentGPT
+
+- **Questions before advice.** Each reply reflects what the student said and asks one focused question, guided by a private *understanding record* (concern, context, beliefs, emotions, open threads, insights) that is updated after every turn.
+- **Grounded in curated dialogues.** Two reference conversations are retrieved per turn from an authored dataset with BM25, with no extra API calls.
+- **Safety first.** Every message passes a deterministic safety screen in English and Hinglish before the model replies. Signs of crisis switch the reply to a safety protocol and show helplines (Tele-MANAS 14416, emergency 112).
+- **Streaming replies** over Server-Sent Events. Generation runs detached from the request, so a reply is saved even if the browser disconnects.
+- **Clarity summary** on request: what the student came with, what sits underneath, insights in their own words, assumptions to test, and an optional next step.
+
+### Classroom
+
+- **Intake and diagnostic.** Clarifying questions, then a short assessment graded deterministically (multiple choice) or against a rubric (short answers). Answer keys never reach the browser.
+- **Personalised roadmap** of 3 to 6 modules with objectives, concepts, durations and milestones, stored as versioned revisions.
+- **Lessons** generated on first open and cached: hook, explanation, worked example, common mistakes, self-check and key takeaways.
+- **AI teacher** per lesson that knows the student's goal, profile, weak concepts and progress.
+- **Practice and projects.** Quizzes that prioritise weak concepts, and milestone projects graded against a rubric.
+- **Adaptive progress.** Per-concept mastery, targeted re-explanations when a quiz is below 70 percent, and roadmap revisions shown as proposals the student approves.
+- **Vetted resources.** Suggested links are restricted to trusted domains and checked for reachability.
+
+### Platform
+
+- **Use without signing up.** Guests get a limited daily allowance; signing up keeps everything they created.
+- Email and password accounts with Argon2 hashing, revocable server-side sessions, CSRF protection and per-user daily quotas.
+- Responsive, accessible interface with light and dark themes.
+- **Provider-agnostic AI layer:** Google Gemini by default, or any OpenAI-compatible endpoint (Groq, OpenRouter, a local Ollama). Structured outputs are validated with Pydantic and repaired once before anything is saved.
+
+## Tech stack
+
+| Layer | Technology |
 |---|---|
-| Frontend | React 18, Vite, TypeScript, Tailwind CSS (custom token-based design system, light and dark) |
-| Backend | FastAPI, SQLAlchemy 2 (async), Alembic, Pydantic v2 |
+| Frontend | React 18, TypeScript, Vite, Tailwind CSS, TanStack Query, React Router |
+| Backend | Python, FastAPI, SQLAlchemy 2 (async), Alembic, Pydantic v2 |
 | Database | PostgreSQL in production, SQLite for zero-setup local development |
-| AI | Provider-agnostic layer (Gemini REST, OpenAI-compatible), structured output with validation and repair |
-| Tests | pytest (62), Vitest, Playwright end-to-end on desktop and mobile |
+| AI | Google Gemini (`gemini-3.5-flash-lite` by default) or any OpenAI-compatible API |
+| Testing | pytest (SQLite and PostgreSQL), Vitest, Playwright end-to-end on desktop and mobile |
+| Delivery | Single Docker image, GitHub Actions CI, Render blueprint |
 
-## Quick start (local)
+## Architecture
 
-Requirements: Python 3.11+, [uv](https://docs.astral.sh/uv/), Node 20+.
+```
+Browser (React SPA)
+   |  same-origin HTTPS, JSON, Server-Sent Events for streamed replies
+   v
+FastAPI (one process; also serves the built SPA)
+   |-- routes/        auth, studentgpt, classroom, dashboard, health
+   |-- services/
+   |     llm/         provider interface: Gemini | OpenAI-compatible | offline fake (tests)
+   |     studentgpt/  safety screen -> prompt (record + exemplars) -> stream -> state update
+   |     classroom/   intake, diagnostic, roadmap, lessons, grading, adaptation, resources
+   |     quota.py     per-user rolling 24-hour allowances
+   v
+SQLAlchemy 2 (async) --> PostgreSQL (SQLite locally)
+```
+
+The frontend is built into static files and served by the same FastAPI process, so the whole product deploys as one service with no cross-origin cookies. Details are in [docs/architecture.md](docs/architecture.md).
+
+## Getting started
+
+### Prerequisites
+
+- Python 3.11 or newer and [uv](https://docs.astral.sh/uv/)
+- Node.js 20 or newer
+- A free Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey) (optional, see offline mode below)
+
+### Run locally
 
 ```bash
+git clone https://github.com/aviraj1805/MahaGuru-V1.git
+cd MahaGuru-V1
+
 # 1. API
 cd apps/api
-cp .env.example .env            # add GEMINI_API_KEY (free: https://aistudio.google.com/apikey)
+cp .env.example .env              # set GEMINI_API_KEY
 uv sync
 uv run alembic upgrade head
 uv run uvicorn app.main:app --reload --port 8000
 
-# 2. Web (second terminal)
+# 2. Web (in a second terminal)
 cd apps/web
 npm install
-npm run dev                      # http://localhost:5173 (proxies /api to :8000)
+npm run dev                        # http://localhost:5173, proxies /api to :8000
 ```
 
-No API key yet? Set `LLM_PROVIDER=fake` in `apps/api/.env` to click through the whole product offline. A banner makes clear the replies are placeholders, and this mode is refused in production.
+**Offline mode.** Without an API key, set `LLM_PROVIDER=fake` in `apps/api/.env` to click through the whole product with placeholder replies. A banner makes this clear, and the mode is refused in production.
 
-Prefer Docker? `GEMINI_API_KEY=... docker compose up --build` gives you Postgres plus the app on http://localhost:8000.
-
-## Tests
+### Run with Docker
 
 ```bash
-cd apps/api && uv run pytest              # API, engines, LLM layer, migrations (SQLite)
-TEST_DATABASE_URL=postgresql+asyncpg://user@localhost/db uv run pytest   # same suite on Postgres
-cd apps/web && npm test                   # unit tests
-cd apps/web && npm run build && npm run e2e   # Playwright journeys (desktop + mobile)
+GEMINI_API_KEY=your-key docker compose up --build
 ```
 
-Tests use a deterministic offline AI provider, so they are free and repeatable. The quality of the real model is measured separately with the [StudentGPT evaluation harness](docs/evaluation.md).
+This starts PostgreSQL and the app on http://localhost:8000.
 
-## Repository layout
+## Configuration
+
+| Variable | Required | Default | Purpose |
+|---|---|---|---|
+| `ENV` | production | `development` | `production` enables strict checks and secure cookies |
+| `SECRET_KEY` | yes | development value | At least 32 random characters in production |
+| `DATABASE_URL` | yes | SQLite file | PostgreSQL URL in production |
+| `LLM_PROVIDER` | | `gemini` | `gemini`, `openai_compat`, or `fake` (not allowed in production) |
+| `GEMINI_API_KEY` | with Gemini | | Kept server-side, never sent to the browser |
+| `LLM_MODEL` / `LLM_FAST_MODEL` | | `gemini-3.5-flash-lite` | Models for conversation and for structured tasks |
+| `OPENAI_BASE_URL` / `OPENAI_API_KEY` | with `openai_compat` | | Any OpenAI-compatible endpoint |
+| `WEB_ORIGIN` | | `http://localhost:5173` | Public site URL |
+
+The full list, including quota settings, is in [docs/deployment.md](docs/deployment.md).
+
+## Testing
+
+```bash
+cd apps/api && uv run pytest                      # API, engines, LLM layer, migrations
+cd apps/web && npm test                           # unit tests
+cd apps/web && npm run build && npm run e2e       # Playwright journeys, desktop and mobile
+```
+
+Tests use a deterministic offline AI provider, so they are free and repeatable. CI runs the API suite on both SQLite and PostgreSQL, checks that migrations apply to a fresh database, runs the end-to-end journeys and builds the Docker image. The behaviour of the real model is measured separately with the [StudentGPT evaluation harness](docs/evaluation.md).
+
+## Deployment
+
+The repository includes a [Render blueprint](render.yaml) for a free deployment:
+
+1. Create a free PostgreSQL database (for example on [Neon](https://neon.tech)) and copy its connection string.
+2. In Render, choose **New, Blueprint** and select this repository.
+3. Set `DATABASE_URL`, `GEMINI_API_KEY` and `WEB_ORIGIN`. `SECRET_KEY` is generated for you.
+4. Deploy. The container applies migrations on start and exposes a health check at `/api/health`.
+
+Step-by-step instructions, alternatives and free-tier limits are in [docs/deployment.md](docs/deployment.md).
+
+## Project structure
 
 ```
-apps/api/                 FastAPI backend
-  app/api/routes/         auth, studentgpt, classroom, dashboard
-  app/services/llm/       provider abstraction, Gemini, OpenAI-compatible, offline fake
-  app/services/studentgpt safety screen, understanding record, exemplar retrieval, prompts
-  app/services/classroom  intake, diagnostic, roadmap, lessons, grading, adaptation, resources
-  alembic/                database migrations
-  scripts/                dataset build, dialogue generation, evaluation
-  tests/
-apps/web/                 React app (pages, features/studentgpt, features/classroom)
-data/studentgpt/          authored dialogue dataset and evaluation scenarios
-docs/                     architecture, dataset, evaluation, deployment, decisions
+apps/
+  api/                      FastAPI backend
+    app/api/routes/         auth, studentgpt, classroom, dashboard
+    app/services/llm/       provider abstraction, Gemini, OpenAI-compatible, offline fake
+    app/services/studentgpt safety screen, understanding record, exemplar retrieval, prompts
+    app/services/classroom  intake, diagnostic, roadmap, lessons, grading, adaptation
+    alembic/                database migrations
+    scripts/                dataset build, dialogue generation, evaluation
+    tests/
+  web/                      React app
+    src/features/           studentgpt and classroom
+    e2e/                    Playwright journeys
+data/studentgpt/            authored dialogue dataset and evaluation scenarios
+docs/                       architecture, dataset, evaluation, deployment, decisions
 ```
 
 ## Documentation
 
-- [Architecture](docs/architecture.md): how both products work, the data model and API.
-- [StudentGPT dataset](docs/dataset.md): audit of the original data, the new dataset and how to grow it.
-- [Evaluation](docs/evaluation.md): how StudentGPT's behaviour is measured.
-- [Deployment](docs/deployment.md): free hosting (Render plus Neon), domain, secrets, monitoring and costs.
-- [Decisions](docs/decisions.md): key technical choices and trade-offs.
+| Document | Contents |
+|---|---|
+| [Architecture](docs/architecture.md) | How both products work, the data model and the API |
+| [StudentGPT dataset](docs/dataset.md) | The authored dialogue dataset and how to extend it |
+| [Evaluation](docs/evaluation.md) | How StudentGPT's behaviour is measured |
+| [Deployment](docs/deployment.md) | Free hosting, environment variables, secrets and monitoring |
+| [Decisions](docs/decisions.md) | Key technical choices and their trade-offs |
 
-## Safety
+## Safety and responsible use
 
-StudentGPT is a mentor for reflection, **not** a therapist or medical service. Every message passes a deterministic safety screen (English and Hinglish) before the model replies. If there are signs of crisis, the reply switches to a safety protocol and the UI shows helplines (Tele-MANAS 14416, 112). The platform is intended for students aged 18 and above. See [`/safety`](apps/web/src/pages/InfoPage.tsx) in the app.
+StudentGPT is a mentor for reflection. It is **not** a therapist, counsellor or medical service. Every message is screened before the model replies, and if there are signs of crisis the conversation switches to a safety protocol and shows helplines. Safety events record only a level and category, never the message text. The platform is intended for users aged 18 and above.
+
+If you are in crisis in India, call Tele-MANAS at **14416** or emergency services at **112**.
+
+## Contributing
+
+Contributions are welcome. Please open an issue to discuss a substantial change before sending a pull request, and make sure `uv run ruff check`, `uv run pytest` and the web tests pass locally.
 
 ## License
 
-[MIT](LICENSE)
+Released under the [MIT License](LICENSE).
