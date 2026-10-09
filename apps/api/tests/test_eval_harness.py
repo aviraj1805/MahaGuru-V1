@@ -91,3 +91,11 @@ async def test_patient_llm_never_repeats_a_half_streamed_reply(monkeypatch):
 
 async def _no_sleep(_seconds):
     return None
+
+
+async def test_eval_keeps_care_mode_like_production(fake_llm):
+    # The API route never lowers a conversation's risk silently; the harness must do the same,
+    # or later turns are evaluated without the care instructions real students would get.
+    scenarios = {s["id"]: s for s in json.loads(SCENARIOS.read_text())}
+    result = await run_scenario(scenarios["ev-elevated-panic"], turns=3)
+    assert [t["risk"] for t in result["transcript"]] == ["elevated"] * 3
