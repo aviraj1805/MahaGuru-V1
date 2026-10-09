@@ -1,5 +1,36 @@
 import { expect, test, type Page } from '@playwright/test';
 
+// Surface the real cause of a failure: API errors and browser console errors are printed
+// next to the failing step instead of only "element not found".
+test.beforeEach(async ({ page }) => {
+  // Current Chrome returns Promises from scroll APIs. Emulate that everywhere so effects that
+  // accidentally return those values (React then calls them as cleanups) fail on any browser.
+  await page.addInitScript(() => {
+    const wrap = (proto: any, name: string) => {
+      const original = proto[name];
+      proto[name] = function (...args: unknown[]) {
+        original.apply(this, args);
+        return Promise.resolve();
+      };
+    };
+    wrap(window, 'scrollTo');
+    wrap(Element.prototype, 'scrollIntoView');
+  });
+  page.on('response', async (r) => {
+    if (r.url().includes('/api/') && r.status() >= 400) {
+      console.log(`[api ${r.status()}] ${r.request().method()} ${r.url()} ${(await r.text().catch(() => '')).slice(0, 300)}`);
+    }
+  });
+  page.on('requestfailed', (r) => {
+    // Requests cancelled by navigation (ERR_ABORTED) are normal and only add noise.
+    if (r.failure()?.errorText !== 'net::ERR_ABORTED') {
+      console.log(`[request failed] ${r.method()} ${r.url()} ${r.failure()?.errorText}`);
+    }
+  });
+  page.on('console', (m) => m.type() === 'error' && console.log(`[browser error] ${m.text()}`));
+  page.on('pageerror', (e) => console.log(`[page error] ${e.message}`));
+});
+
 async function noHorizontalScroll(page: Page) {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
   expect(overflow, 'page should not scroll horizontally').toBe(false);

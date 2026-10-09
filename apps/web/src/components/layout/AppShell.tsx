@@ -103,7 +103,9 @@ function DemoBanner() {
 export function TopNav() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  useEffect(() => setOpen(false), [location.pathname]);
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
   return (
     <header className="sticky top-0 z-40 border-b border-line/80 bg-bg/85 backdrop-blur-md">
       <div className="container-page flex h-16 items-center justify-between gap-4">
