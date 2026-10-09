@@ -37,7 +37,9 @@ function TeacherPanel({ classroomId, lesson }: { classroomId: string; lesson: Le
   const [error, setError] = useState<string | null>(null);
   const end = useRef<HTMLDivElement>(null);
 
-  useEffect(() => end.current?.scrollIntoView({ block: 'end' }), [lesson.chat.length, answer, pendingQ]);
+  useEffect(() => {
+    end.current?.scrollIntoView({ block: 'end' });
+  }, [lesson.chat.length, answer, pendingQ]);
 
   const ask = async (e?: FormEvent) => {
     e?.preventDefault();
@@ -141,7 +143,9 @@ function PracticeSection({ classroomId, lesson, onDone }: { classroomId: string;
   const refreshSession = useRefreshSession();
   const [quiz, setQuiz] = useState<Assessment | null>(lesson.latest_quiz);
   const [busy, setBusy] = useState<null | 'new' | 'submit'>(null);
-  useEffect(() => setQuiz(lesson.latest_quiz), [lesson.latest_quiz]);
+  useEffect(() => {
+    setQuiz(lesson.latest_quiz);
+  }, [lesson.latest_quiz]);
 
   const newQuiz = async () => {
     setBusy('new');

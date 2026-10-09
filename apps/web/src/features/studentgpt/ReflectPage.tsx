@@ -168,7 +168,9 @@ function Composer({
   autoFocus?: boolean;
 }) {
   const [text, setText] = useState(initial);
-  useEffect(() => setText(initial), [initial]);
+  useEffect(() => {
+    setText(initial);
+  }, [initial]);
   const submit = (e?: FormEvent) => {
     e?.preventDefault();
     const t = text.trim();

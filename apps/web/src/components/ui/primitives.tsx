@@ -102,7 +102,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     const line = parseFloat(getComputedStyle(el).lineHeight) || 22;
     el.style.height = Math.min(el.scrollHeight, line * maxRows + 24) + 'px';
   };
-  useEffect(resize, [props.value]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    resize();
+  }, [props.value]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <textarea
       ref={(el) => {
