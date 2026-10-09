@@ -46,6 +46,7 @@ A clarity summary can propose a learning goal, and one click turns it into a Cla
 <p align="center">
   <img src="docs/screenshots/home-products.png" alt="Interactive product switcher on the homepage" width="100%" />
 </p>
+<p align="center"><sub>An interactive product switcher with animated previews of StudentGPT and Classroom</sub></p>
 
 ### StudentGPT
 
@@ -124,19 +125,40 @@ A clarity summary can propose a learning goal, and one click turns it into a Cla
 - **Adaptive progress.** Per-concept mastery, targeted re-explanations when a quiz is below 70 percent, and roadmap revisions shown as proposals the student approves.
 - **Vetted resources.** Suggested links are restricted to trusted domains and checked for reachability.
 
+### Homepage and website
+
+- **Live product demo in the hero.** A StudentGPT conversation types itself out, and visitors can switch between three scenarios (career confusion, family pressure, and lost motivation in Hinglish).
+- **Motion with a purpose.** Animated gradient lighting, a scrolling marquee of real student topics, statistics that count up on scroll, a product switcher with animated previews, and a process timeline that draws itself.
+- **Short, direct copy.** Each section leads with a visual and a single line rather than paragraphs.
+- **Sourced facts.** Every statistic links to its primary source (Ministry of Education, India Skills Report, NIMHANS, Bloom 1984).
+- **Research and About pages.** The learning-science principles behind each feature, the evaluation method, stated limitations, a reference list, the mission and how to contribute.
+- **Respectful motion.** All animation is switched off for visitors who prefer reduced motion, and the layout adapts to phones, tablets and desktops.
+
 ### Platform
 
 - **Use without signing up.** Guests get a limited daily allowance; signing up keeps everything they created.
 - Email and password accounts with Argon2 hashing, revocable server-side sessions, CSRF protection and per-user daily quotas.
-- Restrained, accessible interface with light and dark themes, built from a small token-based design system.
-- **Research page** with sourced facts about students in India, the learning-science principles behind each feature, the evaluation method and stated limitations.
+- One token-based design system across the app, with light and dark themes and a single brand colour.
 - **Provider-agnostic AI layer:** Google Gemini by default, or any OpenAI-compatible endpoint (Groq, OpenRouter, a local Ollama). Structured outputs are validated with Pydantic and repaired once before anything is saved.
+
+## Site map
+
+| Route | Page |
+|---|---|
+| `/` | Homepage with the live demo and product overview |
+| `/reflect` | StudentGPT conversations and clarity summaries |
+| `/learn` | Classroom: goals, roadmaps, lessons and practice |
+| `/dashboard` | Ongoing reflections, classrooms and daily allowance |
+| `/research` | Sourced facts, principles, evaluation method and references |
+| `/about` | Mission, beliefs and contributing |
+| `/safety`, `/privacy` | Helplines, safety design and data handling |
+| `/login`, `/signup`, `/account` | Accounts, with guest work carried over on sign-up |
 
 ## Tech stack
 
 | Layer | Technology |
 |---|---|
-| Frontend | React 18, TypeScript, Vite, Tailwind CSS, TanStack Query, React Router |
+| Frontend | React 18, TypeScript, Vite, Tailwind CSS (custom animation keyframes, no animation library), TanStack Query, React Router |
 | Backend | Python, FastAPI, SQLAlchemy 2 (async), Alembic, Pydantic v2 |
 | Database | PostgreSQL in production, SQLite for zero-setup local development |
 | AI | Google Gemini (`gemini-3.5-flash-lite` by default) or any OpenAI-compatible API |
@@ -248,7 +270,9 @@ apps/
     scripts/                dataset build, dialogue generation, evaluation
     tests/
   web/                      React app
+    src/pages/              homepage, research, about, dashboard, auth and info pages
     src/features/           studentgpt and classroom
+    src/components/         layout shell, UI primitives, marketing motion helpers
     e2e/                    Playwright journeys
 data/studentgpt/            authored dialogue dataset and evaluation scenarios
 docs/                       architecture, dataset, evaluation, deployment, decisions
@@ -263,6 +287,18 @@ docs/                       architecture, dataset, evaluation, deployment, decis
 | [Evaluation](docs/evaluation.md) | How StudentGPT's behaviour is measured |
 | [Deployment](docs/deployment.md) | Free hosting, environment variables, secrets and monitoring |
 | [Decisions](docs/decisions.md) | Key technical choices and their trade-offs |
+
+## Project status
+
+MahaGuru AI is an open-source project in public beta, and the live demo is a showcase deployment.
+
+| Area | Status |
+|---|---|
+| StudentGPT and Classroom | Complete and covered by API, unit and end-to-end tests |
+| Website | Interactive homepage, plus Research, About, Safety and Privacy pages |
+| Demo hosting | Render free tier. The database resets when the service restarts. Use PostgreSQL ([Neon](https://neon.tech)) for persistent data. |
+| Model evaluation | Harness and 24 scenarios in place. Full results will be published in [docs/evaluation.md](docs/evaluation.md). |
+| Next steps | Publish evaluation results, set up a persistent database for the demo, and add more Indian languages to safety screening |
 
 ## Safety and responsible use
 
