@@ -23,7 +23,7 @@ export default defineConfig({
     { name: 'mobile', use: { ...devices['Pixel 7'] } },
   ],
   webServer: {
-    command: `bash -c "rm -f /tmp/mahaguru-e2e.db && cd ../api && uv run alembic upgrade head && uv run uvicorn app.main:app --port ${PORT}"`,
+    command: `bash -c "cd ../api && rm -f mahaguru-e2e.db* && uv run alembic upgrade head && uv run uvicorn app.main:app --port ${PORT}"`,
     url: `http://localhost:${PORT}/api/health`,
     reuseExistingServer: false,
     // Show the API's request log in CI output; it is the first place to look when a journey fails.
@@ -33,7 +33,7 @@ export default defineConfig({
     env: {
       ENV: 'test',
       LLM_PROVIDER: 'fake',
-      DATABASE_URL: 'sqlite+aiosqlite:////tmp/mahaguru-e2e.db',
+      DATABASE_URL: 'sqlite+aiosqlite:///./mahaguru-e2e.db',
       VALIDATE_RESOURCE_LINKS: 'false',
       WEB_DIST_DIR: '../web/dist',
     },
