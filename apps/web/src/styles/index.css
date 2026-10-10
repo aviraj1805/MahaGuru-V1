@@ -4,51 +4,51 @@
 
 @layer base {
   :root {
-    --bg: 250 249 246;
+    --bg: 255 255 255;
     --surface: 255 255 255;
-    --sunken: 243 242 238;
-    --ink: 20 22 31;
-    --muted: 94 100 114;
-    --line: 229 227 221;
-    --brand: 47 91 234;
-    --brand-soft: 234 239 254;
-    --brand-ink: 30 64 175;
-    --reflect: 109 93 230;
-    --reflect-soft: 242 240 255;
-    --reflect-ink: 76 61 184;
-    --learn: 13 148 136;
-    --learn-soft: 230 246 243;
-    --learn-ink: 15 110 100;
-    --danger: 214 48 49;
-    --danger-soft: 254 236 236;
-    --warn: 196 120 0;
-    --warn-soft: 255 246 224;
-    --ok: 22 150 90;
-    --ok-soft: 229 247 237;
+    --sunken: 246 247 249;
+    --ink: 15 23 42;
+    --muted: 82 92 110;
+    --line: 226 230 236;
+    --brand: 29 78 216;
+    --brand-soft: 239 243 254;
+    --brand-ink: 30 58 138;
+    --reflect: 29 78 216;
+    --reflect-soft: 239 243 254;
+    --reflect-ink: 30 58 138;
+    --learn: 29 78 216;
+    --learn-soft: 239 243 254;
+    --learn-ink: 30 58 138;
+    --danger: 196 43 43;
+    --danger-soft: 253 240 240;
+    --warn: 161 98 7;
+    --warn-soft: 254 248 230;
+    --ok: 21 128 61;
+    --ok-soft: 236 248 241;
     color-scheme: light;
   }
   .dark {
-    --bg: 14 16 22;
-    --surface: 22 25 34;
-    --sunken: 17 19 27;
-    --ink: 236 237 242;
-    --muted: 155 161 176;
-    --line: 44 48 61;
-    --brand: 110 145 255;
-    --brand-soft: 30 38 70;
-    --brand-ink: 170 192 255;
-    --reflect: 160 148 255;
-    --reflect-soft: 36 32 64;
-    --reflect-ink: 196 188 255;
-    --learn: 45 200 180;
-    --learn-soft: 18 48 46;
-    --learn-ink: 120 225 210;
-    --danger: 248 113 113;
-    --danger-soft: 60 24 26;
-    --warn: 245 180 70;
-    --warn-soft: 56 42 16;
-    --ok: 74 210 140;
-    --ok-soft: 18 50 36;
+    --bg: 10 13 20;
+    --surface: 16 20 30;
+    --sunken: 13 17 26;
+    --ink: 236 239 244;
+    --muted: 150 160 178;
+    --line: 36 43 57;
+    --brand: 110 149 255;
+    --brand-soft: 24 33 58;
+    --brand-ink: 176 198 255;
+    --reflect: 110 149 255;
+    --reflect-soft: 24 33 58;
+    --reflect-ink: 176 198 255;
+    --learn: 110 149 255;
+    --learn-soft: 24 33 58;
+    --learn-ink: 176 198 255;
+    --danger: 244 114 114;
+    --danger-soft: 58 24 27;
+    --warn: 234 179 8;
+    --warn-soft: 50 40 14;
+    --ok: 74 200 130;
+    --ok-soft: 17 45 32;
     color-scheme: dark;
   }
   html { -webkit-text-size-adjust: 100%; }
@@ -62,18 +62,38 @@
 
 @layer components {
   .container-page { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; }
-  .eyebrow { @apply text-xs font-semibold uppercase tracking-[0.14em] text-muted; }
+  .eyebrow { @apply text-xs font-semibold uppercase tracking-[0.12em] text-muted; }
+  .section { @apply py-20 sm:py-24; }
+  .section-title { @apply font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl; }
+  .section-lead { @apply mt-4 text-lg leading-relaxed text-muted; }
   .prose-mg {
     @apply prose prose-neutral max-w-none dark:prose-invert
-      prose-headings:font-serif prose-headings:font-medium prose-headings:text-ink
+      prose-headings:font-display prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-ink
       prose-p:leading-relaxed prose-a:text-brand prose-a:no-underline hover:prose-a:underline
       prose-code:rounded prose-code:bg-sunken prose-code:px-1 prose-code:py-0.5 prose-code:font-normal
       prose-code:before:content-none prose-code:after:content-none
       prose-pre:bg-[#14161f] prose-pre:text-[#e8e9ee] prose-pre:rounded-xl;
   }
+  .text-gradient {
+    @apply bg-gradient-to-r from-[#60A5FA] via-[#818CF8] to-[#22D3EE] bg-clip-text text-transparent;
+  }
+  .text-gradient-strong {
+    @apply bg-gradient-to-r from-[#1D4ED8] via-[#4F46E5] to-[#0891B2] bg-clip-text text-transparent;
+  }
+  .dark .text-gradient-strong {
+    @apply from-[#60A5FA] via-[#818CF8] to-[#22D3EE];
+  }
+  .bg-grid {
+    background-image: linear-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .reveal { @apply translate-y-6 opacity-0 transition duration-700 ease-out; }
+  .reveal.is-visible { @apply translate-y-0 opacity-100; }
   .prose-mg pre code { @apply bg-transparent p-0 text-inherit; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
 }

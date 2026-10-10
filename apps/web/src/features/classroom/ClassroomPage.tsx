@@ -8,7 +8,7 @@ import {
   Flag,
   Hammer,
   RefreshCw,
-  Sparkles,
+  MessageSquareText,
   Target,
   Trash2,
   Trophy,
@@ -27,7 +27,7 @@ function BusyCard({ title, body }: { title: string; body: string }) {
   return (
     <Card className="p-10 text-center">
       <Spinner className="justify-center" />
-      <h2 className="mt-4 font-serif text-2xl">{title}</h2>
+      <h2 className="mt-4 font-display font-semibold tracking-tight text-2xl">{title}</h2>
       <p className="mx-auto mt-2 max-w-md text-sm text-muted">{body}</p>
     </Card>
   );
@@ -67,10 +67,10 @@ function IntakeView({ room, onUpdate }: { room: ClassroomT; onUpdate: (r: Classr
     <div className="space-y-6">
       <Card className="p-6">
         <p className="eyebrow">Your goal</p>
-        <p className="mt-2 font-serif text-xl leading-snug">{room.intake.goal_restated || room.goal_text}</p>
+        <p className="mt-2 font-display font-semibold tracking-tight text-xl leading-snug">{room.intake.goal_restated || room.goal_text}</p>
       </Card>
       <div>
-        <h2 className="font-serif text-2xl">A few quick questions</h2>
+        <h2 className="font-display font-semibold tracking-tight text-2xl">A few quick questions</h2>
         <p className="mt-1 text-sm text-muted">They help us fit the plan to you. Skip any you're unsure about.</p>
       </div>
       {questions.map((q) => (
@@ -89,7 +89,7 @@ function IntakeView({ room, onUpdate }: { room: ClassroomT; onUpdate: (r: Classr
                     setAnswers((a) => ({ ...a, [q.id]: o }));
                   }}
                   className={cn(
-                    'rounded-full border px-3.5 py-1.5 text-sm transition-colors',
+                    'rounded-md border px-3.5 py-1.5 text-sm transition-colors',
                     answers[q.id] === o && !other[q.id]
                       ? 'border-learn bg-learn text-white'
                       : 'border-line bg-surface hover:border-learn/50',
@@ -106,7 +106,7 @@ function IntakeView({ room, onUpdate }: { room: ClassroomT; onUpdate: (r: Classr
                     setAnswers((a) => ({ ...a, [q.id]: '' }));
                   }}
                   className={cn(
-                    'rounded-full border border-dashed px-3.5 py-1.5 text-sm',
+                    'rounded-md border border-dashed px-3.5 py-1.5 text-sm',
                     other[q.id] ? 'border-learn text-learn' : 'border-line text-muted hover:text-ink',
                   )}
                 >
@@ -152,7 +152,7 @@ function DiagnosticView({ room, onUpdate }: { room: ClassroomT; onUpdate: (r: Cl
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="font-serif text-2xl">Quick assessment</h2>
+        <h2 className="font-display font-semibold tracking-tight text-2xl">Quick assessment</h2>
         <p className="mt-1 text-sm text-muted">
           This is not a test you can fail. It only shows where to start, so answer honestly and skip what you don't know.
         </p>
@@ -293,14 +293,14 @@ function ModuleCard({ room, module, index, onChange }: { room: ClassroomT; modul
       <button className="flex w-full items-start gap-4 p-5 text-left" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
         <span
           className={cn(
-            'grid h-9 w-9 shrink-0 place-items-center rounded-xl font-serif text-sm',
+            'grid h-9 w-9 shrink-0 place-items-center rounded-xl font-display font-semibold tracking-tight text-sm',
             mp?.done ? 'bg-ok-soft text-ok' : 'bg-learn-soft text-learn-ink',
           )}
         >
           {mp?.done ? <Trophy className="h-4 w-4" /> : index + 1}
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block font-serif text-lg leading-snug">{module.title}</span>
+          <span className="block font-display font-semibold tracking-tight text-lg leading-snug">{module.title}</span>
           <span className="mt-0.5 block text-sm text-muted">{module.summary}</span>
           {mp && (
             <span className="mt-2 flex items-center gap-3 text-xs text-muted">
@@ -413,7 +413,7 @@ function RoadmapView({ room, onUpdate, refetch }: { room: ClassroomT; onUpdate: 
         {p && (
           <Card className="p-6">
             <p className="eyebrow">Progress</p>
-            <p className="mt-2 font-serif text-4xl">{p.summary.percent}%</p>
+            <p className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">{p.summary.percent}%</p>
             <ProgressBar value={p.summary.percent} className="mt-3" label="Roadmap progress" />
             <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
               <div>
@@ -472,7 +472,7 @@ function RoadmapView({ room, onUpdate, refetch }: { room: ClassroomT; onUpdate: 
       )}
 
       <div className="flex items-end justify-between gap-3">
-        <h2 className="font-serif text-2xl">Roadmap</h2>
+        <h2 className="font-display font-semibold tracking-tight text-2xl">Roadmap</h2>
         <Button variant="outline" size="sm" onClick={() => setAdjustOpen(true)}>
           <RefreshCw className="h-4 w-4 text-learn" /> Adjust roadmap
         </Button>
@@ -512,7 +512,7 @@ function RoadmapView({ room, onUpdate, refetch }: { room: ClassroomT; onUpdate: 
           <div className="flex justify-end gap-2">
             <Button type="button" variant="ghost" onClick={() => setAdjustOpen(false)}>Cancel</Button>
             <Button type="submit" variant="learn" loading={propose.isPending} disabled={reason.trim().length < 5}>
-              <Sparkles className="h-4 w-4" /> Propose changes
+              <MessageSquareText className="h-4 w-4" /> Propose changes
             </Button>
           </div>
         </form>
@@ -550,7 +550,7 @@ export default function ClassroomPage() {
                 <Target className="h-5 w-5" aria-hidden />
               </div>
               <div>
-                <h1 className="font-serif text-3xl leading-tight sm:text-4xl">{room.data.title}</h1>
+                <h1 className="font-display font-semibold tracking-tight text-3xl leading-tight sm:text-4xl">{room.data.title}</h1>
                 <p className="mt-1 text-sm text-muted">{room.data.goal_text}</p>
               </div>
             </div>

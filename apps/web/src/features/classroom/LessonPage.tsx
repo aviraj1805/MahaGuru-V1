@@ -186,7 +186,7 @@ function PracticeSection({ classroomId, lesson, onDone }: { classroomId: string;
     <section aria-labelledby="practice" className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 id="practice" className="font-serif text-2xl">Practice</h2>
+          <h2 id="practice" className="font-display font-semibold tracking-tight text-2xl">Practice</h2>
           <p className="mt-1 text-sm text-muted">Score 70% or more to complete the lesson. Below that, you'll get a targeted re-explanation.</p>
         </div>
         <Button variant={quiz ? 'outline' : 'learn'} onClick={newQuiz} loading={busy === 'new'}>
@@ -279,7 +279,7 @@ export default function LessonPage() {
               ← Roadmap
             </Link>
             <p className="eyebrow mt-4 text-learn">{l.module_title}</p>
-            <h1 className="mt-1 font-serif text-3xl leading-tight sm:text-4xl">{l.title}</h1>
+            <h1 className="mt-1 font-display font-semibold tracking-tight text-3xl leading-tight sm:text-4xl">{l.title}</h1>
             <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted">
               <Badge tone={l.status === 'completed' ? 'ok' : l.status === 'needs_review' ? 'warn' : 'learn'}>{STATUS_LABEL[l.status]}</Badge>
               <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {minutesLabel(l.est_minutes)}</span>
@@ -323,7 +323,7 @@ export default function LessonPage() {
                 ) : (
                   <Card className="p-10 text-center">
                     <Spinner className="justify-center" />
-                    <p className="mt-3 font-serif text-xl">Writing this lesson for you…</p>
+                    <p className="mt-3 font-display font-semibold tracking-tight text-xl">Writing this lesson for you…</p>
                     <p className="mt-1 text-sm text-muted">Tailored to your level and the concepts you're working on.</p>
                   </Card>
                 )
@@ -350,7 +350,7 @@ export default function LessonPage() {
                   )}
                   {l.resources.length > 0 && (
                     <section>
-                      <h2 className="font-serif text-xl">Go deeper</h2>
+                      <h2 className="font-display font-semibold tracking-tight text-xl">Go deeper</h2>
                       <p className="mt-1 text-xs text-muted">Links from trusted sources, checked before showing.</p>
                       <div className="mt-3 grid gap-3 sm:grid-cols-2">
                         {l.resources.map((r) => (

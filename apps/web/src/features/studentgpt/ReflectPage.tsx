@@ -8,7 +8,7 @@ import {
   PanelLeft,
   Pencil,
   Plus,
-  Sparkles,
+  MessageSquareText,
   Trash2,
   Wand2,
   X,
@@ -223,7 +223,7 @@ function Bubble({ m, streaming }: { m: Pick<ChatMessage, 'role' | 'content'>; st
   return (
     <div className="flex gap-3 animate-fade-up">
       <div className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-reflect-soft text-reflect" aria-hidden>
-        <Sparkles className="h-3.5 w-3.5" />
+        <MessageSquareText className="h-3.5 w-3.5" />
       </div>
       <div className="min-w-0 flex-1 whitespace-pre-wrap text-[15.5px] leading-[1.75] text-ink">
         {m.content}
@@ -237,7 +237,7 @@ function Thinking() {
   return (
     <div className="flex items-center gap-3" aria-label="StudentGPT is thinking">
       <div className="grid h-7 w-7 place-items-center rounded-full bg-reflect-soft text-reflect">
-        <Sparkles className="h-3.5 w-3.5" />
+        <MessageSquareText className="h-3.5 w-3.5" />
       </div>
       <div className="flex gap-1">
         {[0, 1, 2].map((i) => (
@@ -347,7 +347,7 @@ function ConversationView({ id, pending }: { id: string; pending?: string }) {
     <div className="flex min-h-0 flex-1">
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3 sm:px-6">
-          <h1 className="truncate font-serif text-lg">{data.title}</h1>
+          <h1 className="truncate font-display font-semibold tracking-tight text-lg">{data.title}</h1>
           <div className="flex shrink-0 items-center gap-1.5">
             {!data.clarity && (
               <Button
@@ -408,7 +408,7 @@ function ConversationView({ id, pending }: { id: string; pending?: string }) {
       {panel && (
         <aside className="fixed inset-y-0 right-0 z-40 w-[min(22rem,90vw)] overflow-y-auto border-l border-line bg-surface p-5 shadow-lift lg:static lg:z-auto lg:shadow-none">
           <div className="mb-5 flex items-center justify-between">
-            <h2 className="font-serif text-lg">What we've explored</h2>
+            <h2 className="font-display font-semibold tracking-tight text-lg">What we've explored</h2>
             <button className="rounded-md p-1 text-muted hover:bg-sunken" onClick={() => setPanel(false)} aria-label="Close panel">
               <X className="h-4 w-4" />
             </button>
@@ -428,9 +428,9 @@ function Welcome({ onStart, starting }: { onStart: (text: string) => void; start
     <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
       <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-4 py-10 sm:px-6">
         <div className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-reflect-soft text-reflect">
-          <Sparkles className="h-5 w-5" />
+          <MessageSquareText className="h-5 w-5" />
         </div>
-        <h1 className="mt-5 text-center font-serif text-3xl sm:text-4xl">
+        <h1 className="mt-5 text-center font-display font-semibold tracking-tight text-3xl sm:text-4xl">
           {name ? `What's on your mind, ${name}?` : "What's on your mind?"}
         </h1>
         <p className="mx-auto mt-3 max-w-md text-center text-muted">

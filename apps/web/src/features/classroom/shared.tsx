@@ -53,7 +53,7 @@ export function AssessmentView({
         <Card className="flex items-center justify-between gap-4 p-5">
           <div>
             <p className="eyebrow">Your score</p>
-            <p className="mt-1 font-serif text-3xl">{Math.round(assessment.score * 100)}%</p>
+            <p className="mt-1 font-display font-semibold tracking-tight text-3xl">{Math.round(assessment.score * 100)}%</p>
           </div>
           <Badge tone={assessment.score >= 0.7 ? 'ok' : 'warn'}>
             {assessment.score >= 0.7 ? 'Well done' : 'Worth another look'}

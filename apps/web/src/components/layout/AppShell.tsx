@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { BookOpen, LayoutDashboard, LogOut, Menu, Moon, Sparkles, Sun, User as UserIcon, X } from 'lucide-react';
+import { LogOut, Menu, Moon, Sun, X } from 'lucide-react';
 import { api } from '@/lib/api';
 import { useHealth, useSession, SESSION_KEY } from '@/lib/session';
 import { cn, getTheme, setTheme } from '@/lib/utils';
@@ -10,21 +10,22 @@ import { Button } from '@/components/ui/primitives';
 export function Logo({ className }: { className?: string }) {
   return (
     <Link to="/" className={cn('flex items-center gap-2.5', className)} aria-label="MahaGuru AI home">
-      <svg viewBox="0 0 64 64" className="h-8 w-8" aria-hidden>
-        <rect width="64" height="64" rx="16" className="fill-brand" />
-        <path d="M18 44V22l14 13 14-13v22" fill="none" stroke="#fff" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+      <svg viewBox="0 0 64 64" className="h-7 w-7" aria-hidden>
+        <rect width="64" height="64" rx="14" className="fill-brand" />
+        <path d="M17 45V20l15 14 15-14v25" fill="none" stroke="#fff" strokeWidth="5.5" strokeLinecap="square" />
       </svg>
-      <span className="font-serif text-[19px] font-medium tracking-tight">
-        MahaGuru <span className="text-muted">AI</span>
+      <span className="text-[17px] font-semibold tracking-tight">
+        MahaGuru <span className="font-medium text-muted">AI</span>
       </span>
     </Link>
   );
 }
 
 const NAV = [
-  { to: '/reflect', label: 'StudentGPT', icon: Sparkles, tone: 'text-reflect' },
-  { to: '/learn', label: 'Classroom', icon: BookOpen, tone: 'text-learn' },
-  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, tone: 'text-brand' },
+  { to: '/reflect', label: 'StudentGPT' },
+  { to: '/learn', label: 'Classroom' },
+  { to: '/research', label: 'Research' },
+  { to: '/about', label: 'About' },
 ];
 
 function ThemeToggle() {
@@ -56,7 +57,7 @@ function AccountArea({ onNavigate }: { onNavigate?: () => void }) {
           Log in
         </Button>
         <Button size="sm" onClick={() => { navigate('/signup'); onNavigate?.(); }}>
-          Sign up free
+          Get started
         </Button>
       </div>
     );
@@ -64,14 +65,21 @@ function AccountArea({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="flex items-center gap-1">
       <Link
+        to="/dashboard"
+        onClick={onNavigate}
+        className="rounded-lg px-3 py-2 text-sm font-medium text-muted hover:bg-sunken hover:text-ink"
+      >
+        Dashboard
+      </Link>
+      <Link
         to="/account"
         onClick={onNavigate}
         className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-ink hover:bg-sunken"
       >
-        <span className="grid h-7 w-7 place-items-center rounded-full bg-brand-soft text-xs font-semibold text-brand-ink">
+        <span className="grid h-7 w-7 place-items-center rounded-full bg-brand text-xs font-semibold text-white">
           {(user.display_name || user.email || '?').slice(0, 1).toUpperCase()}
         </span>
-        <span className="max-w-[10rem] truncate">{user.display_name || user.email}</span>
+        <span className="max-w-[9rem] truncate">{user.display_name || user.email}</span>
       </Link>
       <button
         className="grid h-9 w-9 place-items-center rounded-lg text-muted hover:bg-sunken hover:text-ink"
@@ -94,7 +102,7 @@ function DemoBanner() {
   const { data } = useHealth();
   if (!data?.demo_mode) return null;
   return (
-    <div className="bg-warn-soft px-4 py-1.5 text-center text-xs text-ink">
+    <div className="border-b border-warn/30 bg-warn-soft px-4 py-1.5 text-center text-xs text-ink">
       Offline demo mode: AI replies are placeholders. Add a free Gemini API key to enable real AI.
     </div>
   );
@@ -107,26 +115,27 @@ export function TopNav() {
     setOpen(false);
   }, [location.pathname]);
   return (
-    <header className="sticky top-0 z-40 border-b border-line/80 bg-bg/85 backdrop-blur-md">
-      <div className="container-page flex h-16 items-center justify-between gap-4">
-        <Logo />
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
-          {NAV.map((n) => (
-            <NavLink
-              key={n.to}
-              to={n.to}
-              className={({ isActive }) =>
-                cn(
-                  'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted transition-colors hover:text-ink',
-                  isActive && 'bg-sunken text-ink',
-                )
-              }
-            >
-              <n.icon className={cn('h-4 w-4', n.tone)} aria-hidden />
-              {n.label}
-            </NavLink>
-          ))}
-        </nav>
+    <header className="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur">
+      <div className="container-page flex h-16 items-center justify-between gap-6">
+        <div className="flex items-center gap-8">
+          <Logo />
+          <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
+            {NAV.map((n) => (
+              <NavLink
+                key={n.to}
+                to={n.to}
+                className={({ isActive }) =>
+                  cn(
+                    'rounded-lg px-3 py-2 text-sm font-medium text-muted transition-colors hover:text-ink',
+                    isActive && 'text-ink',
+                  )
+                }
+              >
+                {n.label}
+              </NavLink>
+            ))}
+          </nav>
+        </div>
         <div className="hidden items-center gap-1 md:flex">
           <ThemeToggle />
           <AccountArea />
@@ -144,16 +153,13 @@ export function TopNav() {
         </div>
       </div>
       {open && (
-        <div className="border-t border-line bg-surface px-4 pb-4 pt-2 md:hidden animate-fade-up">
+        <div className="border-t border-line bg-surface px-4 pb-4 pt-2 md:hidden">
           <nav className="flex flex-col" aria-label="Mobile">
-            {NAV.map((n) => (
-              <NavLink key={n.to} to={n.to} className="flex items-center gap-3 rounded-lg px-2 py-3 text-[15px] font-medium hover:bg-sunken">
-                <n.icon className={cn('h-4 w-4', n.tone)} aria-hidden /> {n.label}
+            {[...NAV, { to: '/dashboard', label: 'Dashboard' }, { to: '/account', label: 'Account' }].map((n) => (
+              <NavLink key={n.to} to={n.to} className="rounded-lg px-2 py-3 text-[15px] font-medium hover:bg-sunken">
+                {n.label}
               </NavLink>
             ))}
-            <NavLink to="/account" className="flex items-center gap-3 rounded-lg px-2 py-3 text-[15px] font-medium hover:bg-sunken">
-              <UserIcon className="h-4 w-4 text-muted" aria-hidden /> Account
-            </NavLink>
           </nav>
           <div className="mt-3 border-t border-line pt-3">
             <AccountArea onNavigate={() => setOpen(false)} />
@@ -164,34 +170,66 @@ export function TopNav() {
   );
 }
 
+const FOOTER = [
+  {
+    title: 'Products',
+    links: [
+      { to: '/reflect', label: 'StudentGPT' },
+      { to: '/learn', label: 'Classroom' },
+      { to: '/dashboard', label: 'Dashboard' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { to: '/about', label: 'About' },
+      { to: '/research', label: 'Research' },
+      { href: 'https://github.com/aviraj1805/MahaGuru-V1', label: 'Open source' },
+    ],
+  },
+  {
+    title: 'Trust',
+    links: [
+      { to: '/safety', label: 'Safety and support' },
+      { to: '/privacy', label: 'Privacy' },
+    ],
+  },
+];
+
 export function Footer() {
   return (
-    <footer className="border-t border-line bg-surface/50">
-      <div className="container-page grid gap-8 py-10 text-sm text-muted md:grid-cols-[1.4fr_1fr_1fr]">
+    <footer className="border-t border-line bg-sunken">
+      <div className="container-page grid gap-10 py-14 text-sm md:grid-cols-[1.6fr_repeat(3,1fr)]">
         <div>
           <Logo />
-          <p className="mt-3 max-w-sm leading-relaxed">
-            From confusion to clarity. Reflective mentorship and personalised learning for college students.
+          <p className="mt-4 max-w-xs leading-relaxed text-muted">
+            Career clarity and personalised learning for college students across India.
           </p>
         </div>
-        <div className="flex flex-col gap-2">
-          <span className="eyebrow">Products</span>
-          <Link to="/reflect" className="hover:text-ink">StudentGPT</Link>
-          <Link to="/learn" className="hover:text-ink">Classroom</Link>
-          <Link to="/dashboard" className="hover:text-ink">Dashboard</Link>
-        </div>
-        <div className="flex flex-col gap-2">
-          <span className="eyebrow">About</span>
-          <Link to="/safety" className="hover:text-ink">Safety & support</Link>
-          <Link to="/privacy" className="hover:text-ink">Privacy</Link>
-          <a href="https://github.com/aviraj1805/MahaGuru-V1" className="hover:text-ink" target="_blank" rel="noreferrer">
-            Open source on GitHub
-          </a>
-        </div>
+        {FOOTER.map((col) => (
+          <div key={col.title} className="flex flex-col gap-2.5">
+            <span className="font-semibold text-ink">{col.title}</span>
+            {col.links.map((l) =>
+              'href' in l ? (
+                <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className="text-muted hover:text-ink">
+                  {l.label}
+                </a>
+              ) : (
+                <Link key={l.label} to={l.to} className="text-muted hover:text-ink">
+                  {l.label}
+                </Link>
+              ),
+            )}
+          </div>
+        ))}
       </div>
-      <div className="container-page border-t border-line py-5 text-xs text-muted">
-        StudentGPT is an AI mentor for reflection, not a therapist or medical service. If you are in
-        crisis in India, call Tele-MANAS at 14416 or emergency services at 112.
+      <div className="border-t border-line">
+        <div className="container-page flex flex-col gap-2 py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; {new Date().getFullYear()} MahaGuru AI. Open source under the MIT License.</p>
+          <p>
+            StudentGPT is not a medical service. In a crisis in India, call Tele-MANAS on 14416 or emergency services on 112.
+          </p>
+        </div>
       </div>
     </footer>
   );
