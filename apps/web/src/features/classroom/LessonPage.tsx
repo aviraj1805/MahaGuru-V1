@@ -21,6 +21,7 @@ import { useToast } from '@/components/ui/toast';
 import { api, errorMessage } from '@/lib/api';
 import { useRefreshSession } from '@/lib/session';
 import { postStream } from '@/lib/sse';
+import { useDocumentTitle } from '@/lib/title';
 import type { Assessment, LessonDetail, SubmitResult } from '@/lib/types';
 import { cn, minutesLabel } from '@/lib/utils';
 import { AssessmentView, CR_LIST, crKey, lessonKey, STATUS_LABEL } from './shared';
@@ -222,6 +223,7 @@ export default function LessonPage() {
     queryKey: lessonKey(classroomId, lessonId),
     queryFn: () => api<LessonDetail>(`/api/classroom/classrooms/${classroomId}/lessons/${lessonId}`),
   });
+  useDocumentTitle(lesson.data?.title);
 
   const generate = async () => {
     if (generating.current) return;

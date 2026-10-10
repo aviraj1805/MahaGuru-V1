@@ -1,4 +1,7 @@
+import pytest
+
 from app.services.classroom.resources import is_trusted
+from app.services.classroom.schemas import PlannedLesson, PlannedModule
 from tests.conftest import parse_sse
 
 GOAL = "I want to learn machine learning to build an AI project for internships"
@@ -258,3 +261,22 @@ def test_trusted_resource_domains():
     assert not is_trusted("http://docs.python.org/3/")  # https only
     assert not is_trusted("https://docs.python.org.evil.com/")
     assert not is_trusted("https://randomblog.example.com/ml")
+
+
+@pytest.mark.parametrize(
+    ("raw", "clean"),
+    [
+        ("Module 1: Joins", "Joins"),
+        ("Lesson 2 - SELECT basics", "SELECT basics"),
+        ("Week 3. Projects", "Projects"),
+        ("Step 4) Install Python", "Install Python"),
+        ("Unit testing basics", "Unit testing basics"),
+        ("Joins", "Joins"),
+        ("Module 1:", "Module 1:"),
+    ],
+)
+def test_roadmap_titles_drop_their_own_numbering(raw, clean):
+    # The UI numbers modules and lessons, so "Module 1: Joins" would read "1 Module 1: Joins".
+    lesson = PlannedLesson(title=raw, objectives=["a"], concepts=["c"])
+    module = PlannedModule(title=raw, summary="s", milestone="m", lessons=[lesson])
+    assert module.title == clean and module.lessons[0].title == clean

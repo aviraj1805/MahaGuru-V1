@@ -19,6 +19,7 @@ import { Alert, Badge, Button, Card, Dialog, ErrorState, Input, ProgressBar, Spi
 import { useToast } from '@/components/ui/toast';
 import { api, errorMessage } from '@/lib/api';
 import { useRefreshSession } from '@/lib/session';
+import { useDocumentTitle } from '@/lib/title';
 import type { AssignmentT, ClassroomT, ModuleT, SubmitResult } from '@/lib/types';
 import { cn, minutesLabel } from '@/lib/utils';
 import { AssessmentView, CR_LIST, crKey, LessonStatusIcon, STATUS_LABEL } from './shared';
@@ -528,6 +529,7 @@ export default function ClassroomPage() {
     queryKey: crKey(classroomId),
     queryFn: () => api<ClassroomT>(`/api/classroom/classrooms/${classroomId}`),
   });
+  useDocumentTitle(room.data?.title);
   const update = (r: ClassroomT) => {
     qc.setQueryData(crKey(classroomId), r);
     qc.invalidateQueries({ queryKey: CR_LIST });

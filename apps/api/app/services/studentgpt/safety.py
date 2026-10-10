@@ -130,20 +130,48 @@ ELEVATED_SUPPORT_LINE = (
     "\n\nIf this has been going on for a while, a college counsellor, a doctor or Tele-MANAS "
     "(call **14416**, free, 24x7) can help alongside our conversation."
 )
+CRISIS_SAFETY_LINE_HINGLISH = (
+    "\n\nAgar tumhe lag raha hai ki tum khatre mein ho, toh abhi **Tele-MANAS ko 14416** par call "
+    "karo (free, 24x7), ya **112** par. Main yahin hoon, tumhare saath."
+)
+ELEVATED_SUPPORT_LINE_HINGLISH = (
+    "\n\nAgar yeh kaafi samay se chal raha hai, toh college counsellor, doctor ya Tele-MANAS "
+    "(**14416** par call karo, free, 24x7) is baatcheet ke saath-saath madad kar sakte hain."
+)
+
+# Common Hindi words in Latin script. Two or more, making up a fair share of the message, means
+# the student is writing Hinglish; Devanagari means Hindi.
+_HINGLISH_WORDS = frozenset(
+    "hai hain nahi nahin mujhe mera meri mere kya kyun kyon yaar toh bhi raha rahi rahe ho hoon "
+    "gaya gayi lagta lagti sab kuch abhi bahut kaise aur karna karke kar ki ke se mein bas pata "
+    "accha acha theek matlab koi kabhi sach".split()
+)
 
 
-def safety_addendum(risk_level: str, reply: str, earlier_replies: list[str]) -> str:
-    """A line to add when the model's reply leaves out the route to help.
+def looks_hinglish(text: str) -> bool:
+    if re.search(r"[ऀ-ॿ]", text):
+        return True
+    words = re.findall(r"[a-z]+", text.lower())
+    hits = sum(w in _HINGLISH_WORDS for w in words)
+    return hits >= 2 and hits >= 0.15 * len(words)
+
+
+def safety_addendum(
+    risk_level: str, reply: str, earlier_replies: list[str], student_message: str = ""
+) -> str:
+    """A line to add when the model's reply leaves out the route to help, in the student's
+    language (English or Hinglish).
 
     Crisis: every reply must name a helpline. Elevated: support must have been mentioned at
     least once in the recent conversation (repeating it on every turn would feel like a script).
     """
+    hinglish = looks_hinglish(student_message)
     if risk_level == "crisis" and not _CRISIS_HELP.search(reply):
-        return CRISIS_SAFETY_LINE
+        return CRISIS_SAFETY_LINE_HINGLISH if hinglish else CRISIS_SAFETY_LINE
     if risk_level == "elevated" and not any(
         _SUPPORT_HELP.search(r) for r in [reply, *earlier_replies]
     ):
-        return ELEVATED_SUPPORT_LINE
+        return ELEVATED_SUPPORT_LINE_HINGLISH if hinglish else ELEVATED_SUPPORT_LINE
     return ""
 
 
