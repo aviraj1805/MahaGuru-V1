@@ -39,8 +39,8 @@ def raise_for_status(response: httpx.Response, provider: str) -> None:
         exc = LLMRateLimited(detail, retry_after=wait)
         if wait is not None and wait > DAILY_LIMIT_SECONDS:
             exc.user_message = (
-                "The AI has reached its free daily limit. Please try again tomorrow. "
-                "Everything up to now is saved."
+                "The AI has used up its free daily limit. It resets at midnight US Pacific "
+                "time (early afternoon in India). Everything up to now is saved."
             )
         raise exc
     invalid_key = response.status_code == 400 and "API_KEY_INVALID" in response.text

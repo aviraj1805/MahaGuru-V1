@@ -5,6 +5,15 @@ _provider: LLMProvider | None = None
 
 
 def build_provider(settings: Settings) -> LLMProvider:
+    provider = _build_base(settings)
+    if settings.llm_provider != "fake" and settings.fallback_models:
+        from app.services.llm.fallback import FallbackProvider
+
+        return FallbackProvider(provider, settings.fallback_models)
+    return provider
+
+
+def _build_base(settings: Settings) -> LLMProvider:
     if settings.llm_provider == "gemini":
         from app.services.llm.gemini import GeminiProvider
 

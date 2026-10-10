@@ -16,7 +16,7 @@ from app.models import SafetyEvent, SgConversation, SgMessage, User
 from app.services.llm import ChatMessage, LLMError, Usage, generate_structured, get_llm
 from app.services.studentgpt import prompts
 from app.services.studentgpt.exemplars import get_index
-from app.services.studentgpt.safety import SafetyResult, combine, screen
+from app.services.studentgpt.safety import SafetyResult, combine, safety_addendum, screen
 from app.services.studentgpt.state import ClarityCard, ConversationState
 
 log = logging.getLogger("mahaguru.studentgpt")
@@ -32,6 +32,7 @@ class Turn:
     risk_level: str
     safety: SafetyResult
     exemplar_ids: list[str] = field(default_factory=list)
+    safety_net: bool = False  # set when stream_reply had to add the route to help itself
 
 
 def plan_turn(conv: SgConversation, history: list[SgMessage], user: User, content: str) -> Turn:
@@ -76,6 +77,7 @@ def plan_turn(conv: SgConversation, history: list[SgMessage], user: User, conten
 
 async def stream_reply(turn: Turn, usage: Usage):
     settings = get_settings()
+    parts: list[str] = []
     async for chunk in get_llm().stream(
         system=turn.system,
         messages=turn.messages,
@@ -85,7 +87,14 @@ async def stream_reply(turn: Turn, usage: Usage):
         task="studentgpt_reply",
         usage=usage,
     ):
+        parts.append(chunk)
         yield chunk
+    earlier = [m.content for m in turn.messages if m.role == "assistant"]
+    addendum = safety_addendum(turn.risk_level, "".join(parts), earlier)
+    if addendum:
+        turn.safety_net = True
+        log.info("Safety net added the route to help (%s turn)", turn.risk_level)
+        yield addendum
 
 
 async def update_state(

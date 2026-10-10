@@ -27,6 +27,7 @@ FastAPI (one process; also serves the built SPA)
 - `LLMProvider.complete()` and `.stream()` with a shared concurrency limit, bounded retries on 429/5xx, and friendly user-facing errors (rate limit, bad key, missing model, timeout).
 - `generate_structured(schema)`: JSON mode, plus the JSON Schema in the prompt, plus Pydantic validation, plus **one repair round** that feeds the validation error back. All Classroom outputs and StudentGPT state updates go through it, and nothing is saved unless it validates.
 - Two model roles: `LLM_MODEL` (conversation, teaching, curriculum) and `LLM_FAST_MODEL` (state updates, grading, quizzes, intake).
+- Fallback models (`fallback.py`): free tiers cap each model separately, so when a model is rate limited the call moves to the next model in `LLM_FALLBACK_MODELS`. A model at its daily cap rests for an hour; a reply that has started streaming is never switched.
 
 ## StudentGPT turn pipeline
 

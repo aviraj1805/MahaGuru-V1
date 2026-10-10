@@ -163,7 +163,8 @@ async def send_message(conv_id: str, body: MessageIn, db: DB, user: CurrentUser)
                     conversation_id=conv_id,
                     role="assistant",
                     content=reply,
-                    meta={"exemplars": turn.exemplar_ids, "risk": turn.risk_level},
+                    meta={"exemplars": turn.exemplar_ids, "risk": turn.risk_level}
+                    | ({"safety_net": True} if turn.safety_net else {}),
                 )
                 s.add(assistant)
                 await quota.record(s, u, "sg_message", usage)

@@ -40,6 +40,7 @@ from app.services.llm import (  # noqa: E402
     set_llm,
 )
 from app.services.llm.base import LLMBadRequest  # noqa: E402
+from app.services.llm.fallback import FallbackProvider  # noqa: E402
 from app.services.llm.http_util import DAILY_LIMIT_SECONDS  # noqa: E402
 from app.services.studentgpt import engine  # noqa: E402
 from app.services.studentgpt.safety import combine  # noqa: E402
@@ -191,6 +192,7 @@ async def run_scenario(sc: dict, turns: int) -> dict:
                 "student": student_msg,
                 "mentor": reply,
                 "risk": plan.risk_level,
+                "safety_net": plan.safety_net,
                 "exemplars": plan.exemplar_ids,
                 "checks": turn_checks(reply, sc["kind"], crisis_turn),
             }
@@ -253,6 +255,8 @@ def summarise(results: list[dict]) -> dict:
         "crisis_protocol_rate": round(
             sum(t["checks"]["points_to_help"] for t in crisis_turns) / max(1, len(crisis_turns)), 2
         ),
+        # How often the model left out the route to help and the code-level net added it.
+        "safety_net_turns": sum(bool(t.get("safety_net")) for t in turns),
         "advice_marker_turns": sum(t["checks"]["advice_markers"] for t in calm_turns),
         "too_long_turns": sum(t["checks"]["too_long"] for t in turns),
         "avg_mentor_words": round(sum(t["checks"]["words"] for t in turns) / max(1, len(turns)), 1),
@@ -286,6 +290,9 @@ def report(summary: dict, results: list[dict], passed: dict, failed: dict | None
     lines += [
         "",
         f"Dimension means: {summary['dimension_means']}",
+        "",
+        f"Safety net added the route to help on {summary['safety_net_turns']} turn(s) "
+        "(the model left it out; students still saw it).",
         "",
         f"Advice-marker turns: {summary['advice_marker_turns']}, too-long turns: {summary['too_long_turns']}, "
         f"avg mentor words: {summary['avg_mentor_words']}",
@@ -343,7 +350,10 @@ async def main() -> int:
     if get_settings().llm_provider == "fake" and not args.dry_run:
         print("Evaluation needs a real model: set LLM_PROVIDER and an API key.")
         return 2
-    set_llm(PatientLLM(get_llm(), wait=args.wait, max_waits=args.max_waits))
+    inner = get_llm()
+    if isinstance(inner, FallbackProvider):  # evaluate the configured model, never a fallback
+        inner = inner.inner
+    set_llm(PatientLLM(inner, wait=args.wait, max_waits=args.max_waits))
     scenarios = json.loads(SCENARIOS.read_text(encoding="utf-8"))
     if args.only:
         scenarios = [s for s in scenarios if s["id"] in args.only]

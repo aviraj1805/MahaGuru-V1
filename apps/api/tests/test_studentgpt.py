@@ -5,7 +5,12 @@ from app.db import session as db_session
 from app.models import SafetyEvent, SgConversation, SgMessage, User
 from app.services.studentgpt.engine import plan_turn
 from app.services.studentgpt.exemplars import Exemplar, ExemplarIndex, get_index
-from app.services.studentgpt.safety import screen
+from app.services.studentgpt.safety import (
+    CRISIS_SAFETY_LINE,
+    ELEVATED_SUPPORT_LINE,
+    safety_addendum,
+    screen,
+)
 from tests.conftest import parse_sse
 
 
@@ -71,6 +76,36 @@ async def test_crisis_reply_falls_back_when_ai_fails(guest, fake_llm):
     events = await _send(guest, conv_id, "I want to kill myself")
     reply = "".join(d["t"] for n, d in events if n == "token")
     assert "Tele-MANAS" in reply and ("done", events[-2][1]) == events[-2]
+
+
+async def test_safety_net_adds_the_helpline_when_the_model_leaves_it_out(
+    guest, fake_llm, monkeypatch
+):
+    monkeypatch.setattr(fake_llm, "_reply", lambda system, messages, task: "What happened today?")
+    conv_id = await _new_conv(guest)
+    events = await _send(guest, conv_id, "Honestly I just want to die")
+    reply = "".join(d["t"] for n, d in events if n == "token")
+    assert reply.startswith("What happened today?") and "14416" in reply and "112" in reply
+    async with db_session.SessionLocal() as s:
+        saved = (
+            await s.execute(select(SgMessage).where(SgMessage.role == "assistant"))
+        ).scalar_one()
+    assert saved.meta["safety_net"] is True and "14416" in saved.content
+
+
+@pytest.mark.parametrize(
+    ("level", "reply", "earlier", "expected"),
+    [
+        ("crisis", "Are you safe right now?", [], CRISIS_SAFETY_LINE),
+        ("crisis", "Please call Tele-MANAS on 14416. Are you safe?", [], ""),
+        ("crisis", "Abhi 112 pe call karo. Kya tum safe ho?", [], ""),
+        ("elevated", "What feels hardest?", [], ELEVATED_SUPPORT_LINE),
+        ("elevated", "What feels hardest?", ["A counsellor can help with this."], ""),
+        ("none", "What feels hardest?", [], ""),
+    ],
+)
+def test_safety_addendum(level, reply, earlier, expected):
+    assert safety_addendum(level, reply, earlier) == expected
 
 
 async def test_ai_failure_returns_error_and_rolls_back_user_message(guest, fake_llm):
