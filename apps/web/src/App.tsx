@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { Spinner } from '@/components/ui/primitives';
+import { titleForPath } from '@/lib/title';
 import HomePage from '@/pages/HomePage';
 
 const ReflectPage = lazy(() => import('@/features/studentgpt/ReflectPage'));
@@ -20,6 +21,7 @@ function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
+    document.title = titleForPath(pathname);
   }, [pathname]);
   return null;
 }

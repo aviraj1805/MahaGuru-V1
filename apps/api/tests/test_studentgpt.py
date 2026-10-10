@@ -7,7 +7,10 @@ from app.services.studentgpt.engine import plan_turn
 from app.services.studentgpt.exemplars import Exemplar, ExemplarIndex, get_index
 from app.services.studentgpt.safety import (
     CRISIS_SAFETY_LINE,
+    CRISIS_SAFETY_LINE_HINGLISH,
     ELEVATED_SUPPORT_LINE,
+    ELEVATED_SUPPORT_LINE_HINGLISH,
+    looks_hinglish,
     safety_addendum,
     screen,
 )
@@ -106,6 +109,30 @@ async def test_safety_net_adds_the_helpline_when_the_model_leaves_it_out(
 )
 def test_safety_addendum(level, reply, earlier, expected):
     assert safety_addendum(level, reply, earlier) == expected
+
+
+@pytest.mark.parametrize(
+    ("text", "hinglish"),
+    [
+        (
+            "Pata nahi, call karne ki himmat nahi ho rahi. Bas mann karta hai ki sab band karke so jaun",
+            True,
+        ),
+        ("Mere sab dost kuch na kuch kar rahe hain, main hi peeche reh gaya hoon yaar.", True),
+        ("मुझे कुछ समझ नहीं आ रहा", True),
+        ("I failed again and honestly I just want to end my life.", False),
+        ("I live in the main hostel and I ki the door shut", False),
+    ],
+)
+def test_looks_hinglish(text, hinglish):
+    assert looks_hinglish(text) is hinglish
+
+
+def test_safety_lines_follow_the_students_language():
+    student = "Pata nahi yaar, mujhe lagta hai main is duniya mein rehne ke layak hi nahi hoon"
+    assert safety_addendum("crisis", "Kya hua?", [], student) == CRISIS_SAFETY_LINE_HINGLISH
+    assert safety_addendum("elevated", "Kya hua?", [], student) == ELEVATED_SUPPORT_LINE_HINGLISH
+    assert safety_addendum("crisis", "What happened?", [], "I want to die") == CRISIS_SAFETY_LINE
 
 
 async def test_ai_failure_returns_error_and_rolls_back_user_message(guest, fake_llm):

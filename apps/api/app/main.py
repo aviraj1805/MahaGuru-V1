@@ -1,4 +1,5 @@
 import logging
+import re
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -118,6 +119,15 @@ def create_app() -> FastAPI:
     return app
 
 
+# Paths the React router renders (apps/web/src/App.tsx; a test keeps the two in sync). Any other
+# path still gets the app, which shows its "page not found" screen, but with a real 404 status so
+# search engines and link checkers don't index it as a page.
+_SPA_ROUTES = re.compile(
+    r"(|reflect(/[^/]+)?|learn(/new|/[^/]+(/lesson/[^/]+)?)?|dashboard|login|signup|account"
+    r"|safety|privacy|research|about)/?"
+)
+
+
 def _mount_web(app: FastAPI, dist: Path) -> None:
     """Serve the built SPA from the same origin (single-service deployment)."""
     if not dist.is_absolute():
@@ -134,7 +144,8 @@ def _mount_web(app: FastAPI, dist: Path) -> None:
         if full_path and candidate.is_file() and dist in candidate.parents:
             cache = "public, max-age=31536000, immutable" if "/assets/" in str(candidate) else None
             return FileResponse(candidate, headers={"Cache-Control": cache} if cache else None)
-        return FileResponse(index, headers={"Cache-Control": "no-cache"})
+        status = 200 if _SPA_ROUTES.fullmatch(full_path) else 404
+        return FileResponse(index, status_code=status, headers={"Cache-Control": "no-cache"})
 
 
 app = create_app()

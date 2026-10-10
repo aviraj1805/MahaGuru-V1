@@ -1,8 +1,16 @@
 """Shapes the Classroom LLM functions must return. Validated with Pydantic before anything is saved."""
 
+import re
 from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
+
+_NUMBERING = re.compile(r"^\s*(module|lesson|unit|week|part|step)\s*\d+\s*[:.)\-–—]\s*", re.I)
+
+
+def _plain_title(title: str) -> str:
+    """'Module 1: Joins' -> 'Joins'. The app numbers modules and lessons itself."""
+    return _NUMBERING.sub("", title).strip() or title.strip()
 
 
 def _clean(items: list[str], n: int) -> list[str]:
@@ -100,6 +108,11 @@ class PlannedLesson(BaseModel):
     concepts: list[str] = Field(description="1-4 short concept names")
     est_minutes: int = Field(default=30, ge=5, le=240)
 
+    @field_validator("title")
+    @classmethod
+    def _t(cls, v: str) -> str:
+        return _plain_title(v)
+
     @field_validator("objectives")
     @classmethod
     def _o(cls, v: list[str]) -> list[str]:
@@ -116,6 +129,11 @@ class PlannedModule(BaseModel):
     summary: str
     milestone: str = Field(description="What the student can do/build after this module")
     lessons: list[PlannedLesson]
+
+    @field_validator("title")
+    @classmethod
+    def _t(cls, v: str) -> str:
+        return _plain_title(v)
 
     @field_validator("lessons")
     @classmethod

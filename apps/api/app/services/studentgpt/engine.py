@@ -90,7 +90,8 @@ async def stream_reply(turn: Turn, usage: Usage):
         parts.append(chunk)
         yield chunk
     earlier = [m.content for m in turn.messages if m.role == "assistant"]
-    addendum = safety_addendum(turn.risk_level, "".join(parts), earlier)
+    student = turn.messages[-1].content if turn.messages else ""
+    addendum = safety_addendum(turn.risk_level, "".join(parts), earlier, student)
     if addendum:
         turn.safety_net = True
         log.info("Safety net added the route to help (%s turn)", turn.risk_level)
