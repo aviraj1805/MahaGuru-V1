@@ -13,7 +13,7 @@ export function LessonStatusIcon({ status, className }: { status: LessonStatus; 
     completed: <CheckCircle2 className={cn('h-5 w-5 text-ok', className)} aria-label="Completed" />,
     in_progress: <CircleDot className={cn('h-5 w-5 text-learn', className)} aria-label="In progress" />,
     needs_review: <RotateCcw className={cn('h-5 w-5 text-warn', className)} aria-label="Needs review" />,
-    not_started: <Circle className={cn('h-5 w-5 text-line', className)} aria-label="Not started" />,
+    not_started: <Circle className={cn('h-5 w-5 text-line-strong', className)} aria-label="Not started" />,
   };
   return map[status];
 }
@@ -83,7 +83,7 @@ export function AssessmentView({
                         key={idx}
                         className={cn(
                           'flex cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-2.5 text-[15px] transition-colors',
-                          chosen && !graded ? 'border-learn bg-learn-soft' : 'border-line hover:bg-sunken',
+                          chosen && !graded ? 'border-learn bg-learn-soft' : 'border-line-strong hover:bg-sunken',
                           correct && 'border-ok/50 bg-ok-soft',
                           wrongPick && 'border-danger/40 bg-danger-soft',
                           graded && 'cursor-default hover:bg-transparent',
