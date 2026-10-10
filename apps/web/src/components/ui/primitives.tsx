@@ -17,13 +17,13 @@ type Variant = 'primary' | 'secondary' | 'ghost' | 'outline' | 'danger' | 'refle
 type Size = 'sm' | 'md' | 'lg' | 'icon';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-brand text-white hover:bg-brand/90',
-  reflect: 'bg-brand text-white hover:bg-brand/90',
-  learn: 'bg-brand text-white hover:bg-brand/90',
+  primary: 'bg-brand text-on-brand hover:bg-brand/90',
+  reflect: 'bg-brand text-on-brand hover:bg-brand/90',
+  learn: 'bg-brand text-on-brand hover:bg-brand/90',
   secondary: 'bg-sunken text-ink hover:bg-line/70',
-  outline: 'border border-line bg-surface text-ink hover:border-ink/25 hover:bg-sunken',
+  outline: 'border border-line-strong bg-surface text-ink hover:border-ink/25 hover:bg-sunken',
   ghost: 'text-ink hover:bg-sunken',
-  danger: 'bg-danger text-white hover:bg-danger/90',
+  danger: 'bg-danger text-on-danger hover:bg-danger/90',
 };
 const sizes: Record<Size, string> = {
   sm: 'h-8 px-3 text-sm gap-1.5 rounded-md',
@@ -79,7 +79,7 @@ export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputE
       <input
         ref={ref}
         className={cn(
-          'h-11 w-full rounded-lg border border-line bg-surface px-3.5 text-[15px] text-ink placeholder:text-muted/80 transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/15',
+          'h-11 w-full rounded-lg border border-line-strong bg-surface px-3.5 text-[15px] text-ink placeholder:text-muted transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/15',
           className,
         )}
         {...props}
@@ -117,7 +117,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
         onInput?.(e);
       }}
       className={cn(
-        'w-full resize-none rounded-lg border border-line bg-surface px-3.5 py-3 text-[15px] leading-relaxed text-ink placeholder:text-muted/80 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/15',
+        'w-full resize-none rounded-lg border border-line-strong bg-surface px-3.5 py-3 text-[15px] leading-relaxed text-ink placeholder:text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/15',
         className,
       )}
       {...props}

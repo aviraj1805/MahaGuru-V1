@@ -11,8 +11,12 @@ export function Logo({ className }: { className?: string }) {
   return (
     <Link to="/" className={cn('flex items-center gap-2.5', className)} aria-label="MahaGuru AI home">
       <svg viewBox="0 0 64 64" className="h-7 w-7" aria-hidden>
-        <rect width="64" height="64" rx="14" className="fill-brand" />
-        <path d="M17 45V20l15 14 15-14v25" fill="none" stroke="#fff" strokeWidth="5.5" strokeLinecap="square" />
+        <rect width="64" height="64" rx="16" className="fill-brand" />
+        <g transform="translate(-2.5 2)" className="text-on-brand">
+          <path d="M16 45V24l14 14 13.5-13.5" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="46" cy="22" r="10" fill="currentColor" fillOpacity=".22" />
+          <circle cx="46" cy="22" r="5.5" fill="currentColor" />
+        </g>
       </svg>
       <span className="text-[17px] font-semibold tracking-tight">
         MahaGuru <span className="font-medium text-muted">AI</span>
@@ -76,7 +80,7 @@ function AccountArea({ onNavigate }: { onNavigate?: () => void }) {
         onClick={onNavigate}
         className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-ink hover:bg-sunken"
       >
-        <span className="grid h-7 w-7 place-items-center rounded-full bg-brand text-xs font-semibold text-white">
+        <span className="grid h-7 w-7 place-items-center rounded-full bg-brand text-xs font-semibold text-on-brand">
           {(user.display_name || user.email || '?').slice(0, 1).toUpperCase()}
         </span>
         <span className="max-w-[9rem] truncate">{user.display_name || user.email}</span>

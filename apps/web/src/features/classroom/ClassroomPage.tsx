@@ -92,7 +92,7 @@ function IntakeView({ room, onUpdate }: { room: ClassroomT; onUpdate: (r: Classr
                   className={cn(
                     'rounded-md border px-3.5 py-1.5 text-sm transition-colors',
                     answers[q.id] === o && !other[q.id]
-                      ? 'border-learn bg-learn text-white'
+                      ? 'border-learn bg-learn text-on-brand'
                       : 'border-line bg-surface hover:border-learn/50',
                   )}
                 >

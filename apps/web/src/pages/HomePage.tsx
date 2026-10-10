@@ -291,32 +291,32 @@ function LiveDemo() {
 
 function Hero() {
   return (
-    <section className="relative isolate overflow-hidden bg-[#060A18] text-white">
+    <section className="relative isolate overflow-hidden bg-hero-ground text-hero-ink">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -left-40 -top-40 h-[34rem] w-[34rem] animate-drift rounded-full bg-blue-600/35 blur-3xl" />
-        <div className="absolute -right-32 top-10 h-[30rem] w-[30rem] animate-drift-slow rounded-full bg-indigo-600/30 blur-3xl" />
-        <div className="absolute bottom-[-12rem] left-1/3 h-[28rem] w-[28rem] animate-drift rounded-full bg-cyan-500/20 blur-3xl" />
+        <div className="absolute -left-40 -top-40 h-[34rem] w-[34rem] animate-drift rounded-full bg-hero-glow-blue/35 blur-3xl" />
+        <div className="absolute -right-32 top-10 h-[30rem] w-[30rem] animate-drift-slow rounded-full bg-hero-glow-indigo/30 blur-3xl" />
+        <div className="absolute bottom-[-12rem] left-1/3 h-[28rem] w-[28rem] animate-drift rounded-full bg-hero-glow-cyan/20 blur-3xl" />
         <div className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" />
       </div>
       <div className="container-page grid gap-14 pb-24 pt-16 sm:pt-24 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-16">
         <div>
-          <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-slate-300 backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
+          <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-hero-muted backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-hero-accent" />
             Built for students across India
           </p>
           <h1 className="mt-6 font-display text-[2.6rem] font-semibold leading-[1.06] tracking-tight sm:text-[3.6rem]">
             From confusion to <span className="text-gradient">clarity</span>, for every college student.
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-hero-muted">
             Find your direction. Build the skills. One place.
           </p>
           <div className="mt-9 max-w-xl">
             <Composer />
           </div>
-          <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-400">
+          <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm text-hero-subtle">
             {['Free to start', 'No sign-up required', 'English and Hinglish'].map((t) => (
               <li key={t} className="flex items-center gap-1.5">
-                <Check className="h-4 w-4 text-sky-400" aria-hidden />
+                <Check className="h-4 w-4 text-hero-accent" aria-hidden />
                 {t}
               </li>
             ))}
