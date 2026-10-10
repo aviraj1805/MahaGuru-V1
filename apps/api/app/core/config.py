@@ -34,6 +34,9 @@ class Settings(BaseSettings):
     # Main model: conversation, teaching, curriculum. Fast model: state updates, grading.
     llm_model: str = "gemini-3.5-flash-lite"
     llm_fast_model: str = "gemini-3.5-flash-lite"
+    # Free tiers cap each model separately, so when a model is rate limited these are tried in
+    # order (comma-separated; empty disables). Unset: gemini-3.1-flash-lite for Gemini.
+    llm_fallback_models: str | None = None
     llm_timeout_seconds: float = 60.0
     llm_max_concurrency: int = 4
     gemini_api_key: str | None = None
@@ -80,6 +83,12 @@ class Settings(BaseSettings):
     @property
     def is_production(self) -> bool:
         return self.env == "production"
+
+    @property
+    def fallback_models(self) -> list[str]:
+        if self.llm_fallback_models is None:
+            return ["gemini-3.1-flash-lite"] if self.llm_provider == "gemini" else []
+        return [m.strip() for m in self.llm_fallback_models.split(",") if m.strip()]
 
     @property
     def allowed_origins(self) -> list[str]:

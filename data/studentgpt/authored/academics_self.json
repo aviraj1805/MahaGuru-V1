@@ -89,7 +89,7 @@
       {"role": "student", "text": "I study well but I blank out in exams. My mind just goes empty when I see the paper."},
       {"role": "mentor", "text": "That must be frustrating, to know the material and not be able to reach it. What do you notice in your body in the first minute of an exam?"},
       {"role": "student", "text": "My heart races, hands get cold. I keep thinking, if I fail this, I lose the scholarship."},
-      {"role": "mentor", "text": "So each exam isn't just an exam; it carries the scholarship. Tell me what the scholarship means to you."},
+      {"role": "mentor", "text": "So each exam isn't just an exam; it carries the scholarship. A racing heart and going blank before every paper is something college counsellors help with a lot, so it's worth having that support alongside our conversation. Tell me what the scholarship means to you."},
       {"role": "student", "text": "Without it I can't afford college. My family can't pay the fees. It's everything."},
       {"role": "mentor", "text": "That's a lot of weight to bring into one exam hall. It makes sense that your mind protects itself by freezing. Is it actually true that a single exam decides the scholarship?"},
       {"role": "student", "text": "Actually no. It's based on overall CGPA above 7.5. I'm at 8.4. One bad exam wouldn't drop me below."},

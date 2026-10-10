@@ -115,6 +115,38 @@ def combine(rule_level: Level, carried_level: Level) -> Level:
     return rule_level if order[rule_level] >= order[carried_level] else carried_level
 
 
+# Prompts ask every risk reply to point to help, but models don't always follow them (in testing,
+# a fallback model skipped helplines on 3 of 14 crisis turns). These lines guarantee it in code.
+_CRISIS_HELP = re.compile(r"14416|tele-?manas|\b112\b", re.IGNORECASE)
+_SUPPORT_HELP = re.compile(
+    r"14416|tele-?manas|\b112\b|helpline|counsell?(or|ing)|doctor|therapist|psycholog",
+    re.IGNORECASE,
+)
+CRISIS_SAFETY_LINE = (
+    "\n\nIf you might be in danger, please call **Tele-MANAS at 14416** (free, 24x7) or **112** "
+    "right now. I'm still here with you."
+)
+ELEVATED_SUPPORT_LINE = (
+    "\n\nIf this has been going on for a while, a college counsellor, a doctor or Tele-MANAS "
+    "(call **14416**, free, 24x7) can help alongside our conversation."
+)
+
+
+def safety_addendum(risk_level: str, reply: str, earlier_replies: list[str]) -> str:
+    """A line to add when the model's reply leaves out the route to help.
+
+    Crisis: every reply must name a helpline. Elevated: support must have been mentioned at
+    least once in the recent conversation (repeating it on every turn would feel like a script).
+    """
+    if risk_level == "crisis" and not _CRISIS_HELP.search(reply):
+        return CRISIS_SAFETY_LINE
+    if risk_level == "elevated" and not any(
+        _SUPPORT_HELP.search(r) for r in [reply, *earlier_replies]
+    ):
+        return ELEVATED_SUPPORT_LINE
+    return ""
+
+
 CRISIS_FALLBACK_REPLY = (
     "I'm really glad you told me this. What you're carrying sounds incredibly heavy, and you "
     "don't have to hold it alone right now.\n\n"
